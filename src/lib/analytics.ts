@@ -1,10 +1,13 @@
 // Google Ads com consentimento (LGPD).
 // A tag só é carregada depois que o visitante aceita os cookies.
-// Configure as variáveis no arquivo .env (ou nas variáveis de ambiente da hospedagem):
-//   VITE_GOOGLE_ADS_ID=AW-XXXXXXXXXX
-//   VITE_GOOGLE_ADS_WHATSAPP_LABEL=xxxxxxxxxxxxxxxx
-//   VITE_GOOGLE_ADS_FORM_LABEL=xxxxxxxxxxxxxxxx
-// Sem VITE_GOOGLE_ADS_ID, nada é carregado e o banner de cookies não aparece.
+// Os códigos abaixo não são secretos (aparecem no código de qualquer site com Google Ads).
+// Para trocar sem mexer no código, use as variáveis VITE_GOOGLE_ADS_* (veja .env.example).
+
+const DEFAULTS = {
+  id: 'AW-18553897997',
+  whatsapp: 'vGr4CP35y7MdEI2ImI9F', // conversão "Clique no WhatsApp"
+  form: 'rezJCNOeprEdEI2ImI9F', // conversão "Enviar formulário de lead"
+}
 
 declare global {
   interface Window {
@@ -13,10 +16,10 @@ declare global {
   }
 }
 
-export const ADS_ID = (import.meta.env.VITE_GOOGLE_ADS_ID as string | undefined)?.trim() || ''
+export const ADS_ID = (import.meta.env.VITE_GOOGLE_ADS_ID as string | undefined)?.trim() || DEFAULTS.id
 const LABELS = {
-  whatsapp: (import.meta.env.VITE_GOOGLE_ADS_WHATSAPP_LABEL as string | undefined)?.trim() || '',
-  form: (import.meta.env.VITE_GOOGLE_ADS_FORM_LABEL as string | undefined)?.trim() || '',
+  whatsapp: (import.meta.env.VITE_GOOGLE_ADS_WHATSAPP_LABEL as string | undefined)?.trim() || DEFAULTS.whatsapp,
+  form: (import.meta.env.VITE_GOOGLE_ADS_FORM_LABEL as string | undefined)?.trim() || DEFAULTS.form,
 }
 
 const STORAGE_KEY = 'ribeirolab-consent'

@@ -15,8 +15,9 @@ npm run dev
 
 Cada push na branch `main` gera um novo deploy na Vercel.
 
-## Google Ads (opcional)
+## Google Ads
 
-Copie `.env.example` para `.env` e preencha o ID e os rótulos de conversão.
-Na Vercel, cadastre as mesmas variáveis em *Settings → Environment Variables*.
-Sem o ID, nenhuma tag é carregada e o aviso de cookies não aparece.
+A medição de conversões já está configurada em `src/lib/analytics.ts`
+(conta AW-18553897997: "Clique no WhatsApp" e "Enviar formulário de lead").
+A tag só carrega depois que o visitante aceita os cookies.
+Para trocar os códigos sem mexer no código, use as variáveis do `.env.example`.
