@@ -402,7 +402,7 @@ function Sobre() {
         <div>
           <h3 className="d-h text-2xl">{t.sobre.eduTitle}</h3>
           <ul className="mt-5">
-            {t.sobre.edu.map(e => <li key={e}>{e}</li>)}
+            {t.sobre.edu.map(e => <li key={e.t} className="d-edu"><strong>{e.t}</strong><span>{e.s}</span></li>)}
           </ul>
         </div>
       </div>

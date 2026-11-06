@@ -428,3 +428,8 @@
 .d-flag { display: block; border-radius: 3px; box-shadow: 0 0 0 1px rgba(17, 22, 51, 0.25); }
 .d-lang-flag .d-flag { transition: transform 0.2s; }
 .d-lang-flag:hover .d-flag { transform: scale(1.1); }
+
+.d-edu { display: flex; flex-direction: column; padding: 14px 0 !important; }
+.d-edu strong { font-weight: 700; line-height: 1.35; }
+.d-edu span { font-size: 15px; color: var(--cinza); margin-top: 2px; }
+.d-sobre-grade h3 + ul { margin-top: 20px; }
