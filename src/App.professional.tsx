@@ -23,6 +23,24 @@ const useT = () => useContext(Txt)
 // ---------------------------------------------------------------------------
 // Peças
 // ---------------------------------------------------------------------------
+function FlagUS() {
+  return (
+    <svg viewBox="0 0 38 24" width="26" height="17" aria-hidden="true" className="d-flag">
+      <rect width="38" height="24" fill="#fff" />
+      {[0, 2, 4, 6, 8, 10, 12].map(i => <rect key={i} y={i * 1.846} width="38" height="1.846" fill="#B22234" />)}
+      <rect width="15.2" height="12.92" fill="#3C3B6E" />
+      {[0, 1, 2, 3].map(r => [0, 1, 2, 3, 4].map(c => (
+        <circle key={`${r}-${c}`} cx={1.6 + c * 3 + (r % 2) * 1.5} cy={1.7 + r * 3.1} r="0.65" fill="#fff" />
+      )))}
+    </svg>
+  )
+}
+
+function LangLabel() {
+  const t = useT()
+  return t.lang === 'pt' ? <FlagUS /> : <>{t.other.label}</>
+}
+
 function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -83,7 +101,7 @@ function Header() {
           <span className="d-nav-links">
             {t.nav.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
           </span>
-          <a href={t.other.href} hrefLang={t.lang === 'pt' ? 'en' : 'pt-BR'} className="d-lang" aria-label={t.other.aria}>{t.other.label}</a>
+          <a href={t.other.href} hrefLang={t.lang === 'pt' ? 'en' : 'pt-BR'} className={`d-lang ${t.lang === 'pt' ? 'd-lang-flag' : ''}`} aria-label={t.other.aria} title={t.other.aria}><LangLabel /></a>
           <a href="#contato" className="d-btn d-nav-cta ml-5">{t.cta}</a>
           <button type="button" onClick={() => setOpen(!open)} className="-mr-2 ml-4 rounded-md p-2 lg:hidden"
             aria-label={open ? t.menuClose : t.menuOpen} aria-expanded={open} aria-controls="menu-celular">
@@ -95,7 +113,7 @@ function Header() {
         <nav id="menu-celular" aria-label={t.navAria} className="border-t border-linha bg-white text-tinta lg:hidden">
           <div className="mx-auto flex max-w-[1240px] flex-col px-5 py-3 sm:px-8">
             {t.nav.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="py-3 text-lg font-medium">{l.label}</a>)}
-            <a href={t.other.href} className="py-3 text-lg font-medium" aria-label={t.other.aria}>{t.other.aria}</a>
+            <a href={t.other.href} className="flex items-center gap-3 py-3 text-lg font-medium">{t.lang === 'pt' && <FlagUS />}{t.other.aria}</a>
             <a href="#contato" onClick={() => setOpen(false)} className="d-btn my-2">{t.cta}</a>
           </div>
         </nav>

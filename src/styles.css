@@ -423,3 +423,8 @@
   .dm-logo-cores { display: none; }
   .dm-logo-img { max-width: 210px; }
 }
+.d-lang-flag { display: inline-flex; align-items: center; padding: 6px; border-width: 0; }
+.d-lang-flag:hover { background: rgba(255, 255, 255, 0.16); }
+.d-flag { display: block; border-radius: 3px; box-shadow: 0 0 0 1px rgba(17, 22, 51, 0.25); }
+.d-lang-flag .d-flag { transition: transform 0.2s; }
+.d-lang-flag:hover .d-flag { transform: scale(1.1); }
