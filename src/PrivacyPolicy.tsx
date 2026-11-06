@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ArrowLeft, Terminal, ShieldCheck } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import CookieBanner, { CookiePreferencesLink } from '@/components/CookieBanner'
 
 const LAST_UPDATED = '6 de novembro de 2026'
@@ -26,15 +26,15 @@ const sections = [
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section id={id} className="scroll-mt-28">
-      <h2 className="text-2xl font-bold text-white mb-4">{title}</h2>
-      <div className="space-y-4 text-gray-300 leading-relaxed">{children}</div>
+      <h2 className="mb-4 text-2xl">{title}</h2>
+      <div className="space-y-4 leading-relaxed">{children}</div>
     </section>
   )
 }
 
 function List({ items }: { items: ReactNode[] }) {
   return (
-    <ul className="space-y-2 pl-5 list-disc marker:text-purple-400">
+    <ul className="space-y-2 pl-5 list-disc marker:text-placa">
       {items.map((item, i) => <li key={i}>{item}</li>)}
     </ul>
   )
@@ -42,68 +42,60 @@ function List({ items }: { items: ReactNode[] }) {
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-lab-dark bg-grid">
-      <header className="sticky top-0 z-50 glass">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2" aria-label="RibeiroLab — página inicial">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-              <Terminal className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-xl text-white">Ribeiro<span className="text-gradient">Lab</span></span>
-          </a>
-          <a href="/" className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors font-medium">
-            <ArrowLeft className="w-4 h-4" /> Voltar ao site
+    <div className="min-h-screen bg-white">
+      <header className="sticky top-0 z-40 border-b border-linha bg-white/95 backdrop-blur">
+        <div className="pagina flex h-[68px] items-center justify-between">
+          <a href="/" aria-label="RibeiroLab, página inicial" className="text-[22px] font-extrabold tracking-tight [font-stretch:115%]">RibeiroLab</a>
+          <a href="/" className="inline-flex items-center gap-2 font-medium text-grafite hover:text-tinta">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Voltar ao site
           </a>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <main className="pagina py-14 md:py-20">
         <div className="mb-12">
-          <span className="inline-flex items-center gap-2 text-purple-400 font-semibold text-sm uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4" /> Privacidade
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Política de Privacidade</h1>
-          <p className="text-gray-400 text-lg max-w-3xl">
+          <h1 className="mb-4 text-[36px] md:text-[48px]">Política de Privacidade</h1>
+          <p className="max-w-3xl text-lg text-grafite">
             Esta política explica, de forma clara, quais dados pessoais a RibeiroLab trata quando você visita
-            o site <strong className="text-white">ribeirolab.dev.br</strong> ou entra em contato conosco, por que
+            o site <strong className="text-tinta">ribeirolab.dev.br</strong> ou entra em contato conosco, por que
             fazemos isso e como você pode exercer seus direitos, conforme a Lei Geral de Proteção de Dados
             (Lei nº 13.709/2018 — LGPD).
           </p>
-          <p className="text-gray-400 text-sm mt-4">Última atualização: {LAST_UPDATED}</p>
+          <p className="mt-4 text-sm text-grafite">Última atualização: {LAST_UPDATED}</p>
         </div>
 
         <div className="grid lg:grid-cols-[260px_1fr] gap-10">
           <nav aria-label="Sumário" className="hidden lg:block">
-            <div className="sticky top-28 glass rounded-2xl p-5">
-              <p className="text-white font-semibold mb-3 text-sm">Nesta página</p>
+            <div className="sticky top-24 rounded-[10px] bg-papel p-5">
+              <p className="mb-3 text-sm font-semibold">Nesta página</p>
               <ol className="space-y-2 text-sm">
                 {sections.map(s => (
                   <li key={s.id}>
-                    <a href={`#${s.id}`} className="text-gray-400 hover:text-purple-300 transition-colors">{s.title}</a>
+                    <a href={`#${s.id}`} className="text-grafite hover:text-placa">{s.title}</a>
                   </li>
                 ))}
               </ol>
             </div>
           </nav>
 
-          <article className="glass rounded-3xl p-6 md:p-10 space-y-12">
+          <article className="max-w-[70ch] space-y-12">
             <Section id="quem-somos" title={sections[0].title}>
               <p>
-                O controlador dos dados pessoais tratados por meio deste site é a <strong className="text-white">RibeiroLab</strong>,
+                O controlador dos dados pessoais tratados por meio deste site é a <strong>RibeiroLab</strong>,
                 marca de desenvolvimento web de Lucas Ribeiro Araujo, com atuação em São Paulo/SP.
               </p>
               <p>
                 Para qualquer assunto relacionado a privacidade e proteção de dados, fale diretamente com o responsável
-                pelo e-mail <a className="text-purple-300 hover:text-white underline underline-offset-4" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                pelo e-mail <a className="link font-medium" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
               </p>
             </Section>
 
             <Section id="dados-coletados" title={sections[1].title}>
               <p>Coletamos apenas o necessário para responder ao seu contato e manter o site funcionando:</p>
               <List items={[
-                <><strong className="text-white">Dados que você nos envia:</strong> nome, e-mail e o conteúdo da mensagem preenchidos no formulário de contato, além do número de telefone e das mensagens trocadas quando você fala conosco pelo WhatsApp ou por e-mail.</>,
-                <><strong className="text-white">Dados de navegação:</strong> endereço IP, tipo de navegador e dispositivo, páginas acessadas, data e hora do acesso. Esses dados são registrados automaticamente pelo provedor de hospedagem e pelos serviços de terceiros carregados na página.</>,
-                <><strong className="text-white">Dados de campanhas:</strong> quando você chega ao site por um anúncio, informações sobre a campanha e interações com a página podem ser coletadas por ferramentas de medição (veja a seção de cookies).</>,
+                <><strong>Dados que você nos envia:</strong> nome, e-mail e o conteúdo da mensagem preenchidos no formulário de contato, além do número de telefone e das mensagens trocadas quando você fala conosco pelo WhatsApp ou por e-mail.</>,
+                <><strong>Dados de navegação:</strong> endereço IP, tipo de navegador e dispositivo, páginas acessadas, data e hora do acesso. Esses dados são registrados automaticamente pelo provedor de hospedagem e pelos serviços de terceiros carregados na página.</>,
+                <><strong>Dados de campanhas:</strong> quando você chega ao site por um anúncio, informações sobre a campanha e interações com a página podem ser coletadas por ferramentas de medição (veja a seção de cookies).</>,
               ]} />
               <p>
                 O formulário do site não grava suas informações em banco de dados: ao clicar em “Enviar Mensagem”, ele
@@ -126,10 +118,10 @@ export default function PrivacyPolicy() {
             <Section id="bases-legais" title={sections[3].title}>
               <p>Tratamos dados pessoais com fundamento no art. 7º da LGPD, em especial:</p>
               <List items={[
-                <><strong className="text-white">Procedimentos preliminares e execução de contrato</strong> — quando você pede um orçamento ou contrata um serviço;</>,
-                <><strong className="text-white">Legítimo interesse</strong> — para manter a segurança do site e entender, de forma agregada, como ele é usado;</>,
-                <><strong className="text-white">Consentimento</strong> — para cookies e ferramentas de medição que não são estritamente necessárias, quando utilizadas;</>,
-                <><strong className="text-white">Cumprimento de obrigação legal</strong> — quando a lei exigir a guarda de determinadas informações.</>,
+                <><strong>Procedimentos preliminares e execução de contrato</strong> — quando você pede um orçamento ou contrata um serviço;</>,
+                <><strong>Legítimo interesse</strong> — para manter a segurança do site e entender, de forma agregada, como ele é usado;</>,
+                <><strong>Consentimento</strong> — para cookies e ferramentas de medição que não são estritamente necessárias, quando utilizadas;</>,
+                <><strong>Cumprimento de obrigação legal</strong> — quando a lei exigir a guarda de determinadas informações.</>,
               ]} />
             </Section>
 
@@ -144,7 +136,7 @@ export default function PrivacyPolicy() {
                 sua escolha a qualquer momento pelo link “Preferências de cookies” no rodapé do site, bloquear ou apagar
                 cookies nas configurações do navegador e gerenciar a personalização de
                 anúncios do Google em{' '}
-                <a className="text-purple-300 hover:text-white underline underline-offset-4" href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">adssettings.google.com</a>.
+                <a className="link font-medium" href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">adssettings.google.com</a>.
                 Bloquear cookies não impede o uso do site.
               </p>
             </Section>
@@ -152,10 +144,10 @@ export default function PrivacyPolicy() {
             <Section id="compartilhamento" title={sections[5].title}>
               <p>Seus dados podem ser tratados pelos seguintes prestadores de serviço, apenas para as finalidades descritas aqui:</p>
               <List items={[
-                <><strong className="text-white">Provedor de hospedagem</strong> do site, que registra dados técnicos de acesso;</>,
-                <><strong className="text-white">WhatsApp / Meta</strong>, quando você conversa conosco pelo WhatsApp;</>,
-                <><strong className="text-white">Google</strong>, pelo serviço de e-mail (Gmail), pelas fontes do Google Fonts carregadas na página e pelas ferramentas de anúncio e medição;</>,
-                <><strong className="text-white">Serviços de imagem e vídeo</strong> (como Unsplash e Netlify) que exibem as prévias dos projetos do portfólio.</>,
+                <><strong>Provedor de hospedagem</strong> do site, que registra dados técnicos de acesso;</>,
+                <><strong>WhatsApp / Meta</strong>, quando você conversa conosco pelo WhatsApp;</>,
+                <><strong>Google</strong>, pelo serviço de e-mail (Gmail) e pelas ferramentas de anúncio e medição;</>,
+                <><strong>Serviços de imagem e vídeo</strong> (como Unsplash e Netlify) que exibem as prévias dos projetos do portfólio.</>,
               ]} />
               <p>
                 Cada uma dessas empresas tem sua própria política de privacidade. Também poderemos compartilhar dados
@@ -200,10 +192,10 @@ export default function PrivacyPolicy() {
               ]} />
               <p>
                 Para exercer seus direitos, envie um e-mail para{' '}
-                <a className="text-purple-300 hover:text-white underline underline-offset-4" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                <a className="link font-medium" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
                 Responderemos em até 15 dias. Você também pode apresentar reclamação à Autoridade Nacional de Proteção de
                 Dados (ANPD) em{' '}
-                <a className="text-purple-300 hover:text-white underline underline-offset-4" href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">gov.br/anpd</a>.
+                <a className="link font-medium" href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">gov.br/anpd</a>.
               </p>
             </Section>
 
@@ -231,20 +223,20 @@ export default function PrivacyPolicy() {
             <Section id="contato" title={sections[13].title}>
               <p>Dúvidas sobre esta política ou sobre seus dados? Fale com a gente:</p>
               <List items={[
-                <>E-mail: <a className="text-purple-300 hover:text-white underline underline-offset-4" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></>,
-                <>WhatsApp: <a className="text-purple-300 hover:text-white underline underline-offset-4" href="https://wa.me/5511965019133" target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a></>,
+                <>E-mail: <a className="link font-medium" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></>,
+                <>WhatsApp: <a className="link font-medium" href="https://wa.me/5511965019133" target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a></>,
               ]} />
             </Section>
           </article>
         </div>
       </main>
 
-      <footer className="py-10 border-t border-purple-500/20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          <p>© 2026 RibeiroLab — Todos os direitos reservados</p>
+      <footer className="bg-tinta py-10 text-white/75">
+        <div className="pagina flex flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 RibeiroLab. Lucas Ribeiro, São Paulo.</p>
           <div className="flex gap-6">
-            <CookiePreferencesLink className="hover:text-purple-300 transition-colors" />
-            <a href="/" className="hover:text-purple-300 transition-colors">Voltar para a página inicial</a>
+            <CookiePreferencesLink className="hover:text-white" />
+            <a href="/" className="hover:text-white">Voltar para a página inicial</a>
           </div>
         </div>
       </footer>

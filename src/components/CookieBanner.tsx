@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Cookie } from 'lucide-react'
 import { getConsent, initAnalytics, OPEN_PREFERENCES_EVENT, setConsent, trackingEnabled } from '@/lib/analytics'
 
 export default function CookieBanner() {
@@ -23,27 +22,15 @@ export default function CookieBanner() {
 
   return (
     <div role="dialog" aria-live="polite" aria-label="Preferências de cookies"
-      className="fixed inset-x-4 bottom-4 sm:left-6 sm:right-auto sm:max-w-md z-[60] glass rounded-2xl p-5 shadow-2xl">
-      <div className="flex items-start gap-3">
-        <Cookie className="w-6 h-6 text-purple-300 shrink-0 mt-0.5" aria-hidden="true" />
-        <div>
-          <p className="text-white font-semibold mb-1">Cookies de medição</p>
-          <p className="text-gray-300 text-sm leading-relaxed">
-            Usamos cookies do Google para medir quais anúncios trazem contatos. Você pode aceitar ou recusar —
-            o site funciona normalmente nos dois casos. Veja a{' '}
-            <a href="/politica-de-privacidade/#cookies" className="text-purple-300 underline underline-offset-4 hover:text-white">Política de Privacidade</a>.
-          </p>
-          <div className="flex gap-3 mt-4">
-            <button type="button" onClick={() => choose('granted')}
-              className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90">
-              Aceitar
-            </button>
-            <button type="button" onClick={() => choose('denied')}
-              className="border border-white/20 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-white/10">
-              Recusar
-            </button>
-          </div>
-        </div>
+      className="fixed inset-x-3 bottom-3 z-[60] rounded-[10px] border border-linha bg-white p-5 text-tinta shadow-[0_18px_50px_-20px_rgba(27,36,64,0.5)] sm:left-5 sm:right-auto sm:max-w-md">
+      <p className="font-bold">Cookies de medição</p>
+      <p className="mt-1.5 text-[15px] leading-relaxed text-grafite">
+        Uso cookies do Google para saber quais anúncios trazem contatos. O site funciona normalmente se você recusar.
+        Detalhes na <a href="/politica-de-privacidade/#cookies" className="link font-medium">Política de Privacidade</a>.
+      </p>
+      <div className="mt-4 flex gap-3">
+        <button type="button" onClick={() => choose('granted')} className="rounded-[10px] bg-placa px-5 py-2.5 font-semibold text-white hover:bg-placa-escura">Aceitar</button>
+        <button type="button" onClick={() => choose('denied')} className="rounded-[10px] border border-tinta/20 px-5 py-2.5 font-semibold hover:border-tinta/50">Recusar</button>
       </div>
     </div>
   )
