@@ -28,6 +28,20 @@ const works: Work[] = [
   { title: 'AutoMotion', kind: 'Loja de veículos', status: 'Modelo para adaptar', text: 'Estoque de carros e motos com busca e simulação de financiamento.', image: '/projetos/automotion.webp', url: 'https://model-motor.netlify.app/' },
 ]
 
+type Produto = { title: string; text: string; image?: string; tom?: 'sol' | 'azul' | 'tinta'; size: 'g' | 'l' | 'p' }
+
+const produtos: Produto[] = [
+  { title: 'Site institucional', text: 'A cara do seu negócio na internet, com serviços, fotos, mapa e WhatsApp.', image: '/projetos/lumina-odonto.webp', size: 'g' },
+  { title: 'Loja virtual', text: 'Catálogo com carrinho que fecha o pedido no WhatsApp.', image: '/projetos/nativas-mel.webp', size: 'l' },
+  { title: 'Cardápio digital', text: 'Abre pelo QR Code da mesa e sempre com preço atualizado.', tom: 'sol', size: 'p' },
+  { title: 'Agendamento online', text: 'Horários marcados sem telefone, com Trinks, Booksy ou WhatsApp.', image: '/projetos/barbearia-modelo.webp', size: 'p' },
+  { title: 'Catálogo de produtos', text: 'Vitrine das lojas físicas com compra pelo WhatsApp.', image: '/projetos/nina-store.webp', size: 'l' },
+  { title: 'Sistema sob medida', text: 'Frente de caixa, estoque e etiquetas, como o MeuPDV.', image: '/videos/meupdv-capa.jpg', size: 'l' },
+  { title: 'Landing page', text: 'Uma página focada em uma oferta, ideal para anúncios.', image: '/projetos/silva-associados.webp', size: 'p' },
+  { title: 'Logo e identidade visual', text: 'Cores, tipografia e logo para a marca ter cara própria.', tom: 'azul', size: 'p' },
+  { title: 'Anúncios no Google e Instagram', text: 'Campanhas com medição de quantas pessoas chamam no WhatsApp.', tom: 'tinta', size: 'l' },
+]
+
 const offers = [
   { title: 'Ser encontrado', text: 'Site institucional, landing page, cardápio digital e botão de WhatsApp.', message: 'Olá! Quero um site para o meu negócio ser encontrado.' },
   { title: 'Vender pela internet', text: 'Loja virtual, catálogo com pedido no WhatsApp e agendamento online.', message: 'Olá! Quero vender ou receber agendamentos pela internet.' },
@@ -43,6 +57,7 @@ const steps = [
 
 const navLinks = [
   { label: 'Trabalhos', href: '#trabalhos' },
+  { label: 'O que criamos', href: '#produzir' },
   { label: 'Serviços', href: '#servicos' },
   { label: 'Como funciona', href: '#processo' },
   { label: 'Sobre', href: '#sobre' },
@@ -71,7 +86,7 @@ function Win({ src, alt = '' }: { src: string; alt?: string }) {
   return (
     <div className="d-win">
       <div className="d-win-barra" aria-hidden="true"><i /><i /><i /></div>
-      <img src={src} alt={alt} width={800} height={450} loading="lazy" decoding="async" />
+      <img src={src} alt={alt} width={800} height={450} decoding="async" />
     </div>
   )
 }
@@ -79,7 +94,7 @@ function Win({ src, alt = '' }: { src: string; alt?: string }) {
 /** Faz títulos aparecerem ao rolar (uma vez). */
 function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('.d-rev')
+    const els = document.querySelectorAll('.d-rev, .d-card')
     if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return }
     const io = new IntersectionObserver(entries => entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
@@ -119,7 +134,7 @@ function Header() {
       </div>
       {open && (
         <nav id="menu-celular" aria-label="Navegação principal" className="border-t border-linha bg-white text-tinta lg:hidden">
-          <div className="d-wrap flex flex-col py-3">
+          <div className="mx-auto flex max-w-[1240px] flex-col px-5 py-3 sm:px-8">
             {navLinks.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="py-3 text-lg font-medium">{l.label}</a>)}
             <a href="#contato" onClick={() => setOpen(false)} className="d-btn my-2">Pedir orçamento</a>
           </div>
@@ -182,12 +197,12 @@ function Trabalhos() {
       <div className="d-wrap">
         <div className="d-intro d-rev">
           <h2 className="d-h d-h2">Trabalhos</h2>
-          <p>Role a página: cada projeto aparece na tela ao lado. Clientes reais e modelos prontos para receber a sua marca.</p>
+          <p>Clientes reais e modelos prontos para receber a sua marca. Toque em cada um para ver o site funcionando.</p>
         </div>
         <div className="d-scrolly">
           <ol className="d-steps">
             {works.map((w, i) => (
-              <li key={w.title} data-i={i} ref={el => { stepRefs.current[i] = el }} className={`d-step ${active === i ? 'on' : ''}`}>
+              <li key={w.title} data-i={i} ref={el => { stepRefs.current[i] = el }} className={`d-step d-card ${active === i ? 'on' : ''}`}>
                 <span className="d-step-tipo">{w.kind}</span>
                 <h3 className="d-h">{w.title}</h3>
                 <p>{w.text}</p>
@@ -204,12 +219,41 @@ function Trabalhos() {
               <div className="d-tela">
                 {works.map((w, i) => w.video
                   ? <video key={w.title} ref={videoRef} className={active === i ? 'on' : ''} src={w.video} poster={w.image} controls muted playsInline preload="none" tabIndex={-1} />
-                  : <img key={w.title} className={active === i ? 'on' : ''} src={w.image} alt="" loading="lazy" decoding="async" />)}
+                  : <img key={w.title} className={active === i ? 'on' : ''} src={w.image} alt="" decoding="async" />)}
               </div>
             </div>
             <div className="d-contador"><b>{String(active + 1).padStart(2, '0')}</b> / {String(works.length).padStart(2, '0')}</div>
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+function Produzir() {
+  return (
+    <section id="produzir" className="d-sec d-prod-sec scroll-mt-16">
+      <div className="d-wrap">
+        <div className="d-intro d-rev">
+          <h2 className="d-h d-h2">O que dá para criar</h2>
+          <p>Do cardápio da lanchonete ao sistema da rede de lojas. Toque em um item para conversar sobre ele.</p>
+        </div>
+        <ul className="d-bento">
+          {produtos.map(p => (
+            <li key={p.title} className={`d-tile d-card d-tile-${p.size} ${p.tom ? `d-tom-${p.tom}` : ''}`}>
+              <WhatsAppLink message={`Olá! Quero saber mais sobre: ${p.title}.`} label={`Conversar sobre ${p.title} no WhatsApp`}>
+                {p.image && <span className="d-tile-img"><img src={p.image} alt="" loading="lazy" decoding="async" /></span>}
+                <span className="d-tile-txt">
+                  <strong className="d-h">{p.title}</strong>
+                  <span>{p.text}</span>
+                </span>
+              </WhatsAppLink>
+            </li>
+          ))}
+        </ul>
+        <p className="d-prod-fim">
+          Não achou o que precisa? <WhatsAppLink message="Olá! Tenho uma ideia de projeto e quero conversar.">Me conte a sua ideia no WhatsApp</WhatsAppLink>.
+        </p>
       </div>
     </section>
   )
@@ -410,6 +454,7 @@ export default function App() {
       <main id="conteudo">
         <Hero />
         <Trabalhos />
+        <Produzir />
         <Servicos />
         <Processo />
         <Sobre />
