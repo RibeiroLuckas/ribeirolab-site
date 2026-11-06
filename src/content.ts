@@ -75,7 +75,7 @@ const pt = {
       { title: 'Catálogo de produtos', text: 'Vitrine das lojas físicas com compra pelo WhatsApp.', image: img('nina-store'), size: 'l' },
       { title: 'Sistema sob medida', text: 'Frente de caixa, estoque e etiquetas, como o MeuPDV.', image: '/videos/meupdv-capa.jpg', size: 'l' },
       { title: 'Landing page', text: 'Uma página focada em uma oferta, ideal para anúncios.', image: img('silva-associados'), size: 'p' },
-      { title: 'Logo e identidade visual', text: 'Logo que criei para a Nina Store, cliente da RibeiroLab.', tom: 'azul', demo: 'logo', size: 'p' },
+      { title: 'Logo e identidade visual', text: 'Logo que criei para a Nina Store, cliente da RibeiroLab.', tom: 'vermelho', demo: 'logo', size: 'p' },
       { title: 'Anúncios no Google e Instagram', text: 'Campanhas com medição de quantas pessoas chamam no WhatsApp.', tom: 'tinta', demo: 'anuncio', size: 'l' },
     ],
     demo: {
@@ -222,7 +222,7 @@ const en: Content = {
       { title: 'Product catalog', text: 'A showcase for physical stores with ordering on WhatsApp.', image: img('nina-store'), size: 'l' },
       { title: 'Custom system', text: 'Checkout, stock and labels, like MeuPDV.', image: '/videos/meupdv-capa.jpg', size: 'l' },
       { title: 'Landing page', text: 'A single page focused on one offer, ideal for ads.', image: img('silva-associados'), size: 'p' },
-      { title: 'Logo and brand identity', text: 'The logo I designed for Nina Store, a RibeiroLab client.', tom: 'azul', demo: 'logo', size: 'p' },
+      { title: 'Logo and brand identity', text: 'The logo I designed for Nina Store, a RibeiroLab client.', tom: 'vermelho', demo: 'logo', size: 'p' },
       { title: 'Google and Instagram ads', text: 'Campaigns that measure how many people message you on WhatsApp.', tom: 'tinta', demo: 'anuncio', size: 'l' },
     ],
     demo: {
