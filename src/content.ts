@@ -110,7 +110,7 @@ const pt = {
     paras: [
       'Sou o Lucas Ribeiro, desenvolvedor. Criei a RibeiroLab para dar a pequenos negócios um visual próprio na internet e um caminho direto até o WhatsApp. Atendo clientes de todo o Brasil, tudo on-line.',
       'Você fala comigo do primeiro contato à publicação. Sem intermediário e sem resposta automática.',
-      'Tenho mais de 8 anos de experiência em suporte técnico, e cada projeto é testado no celular, no tablet e no computador antes de ir ao ar.',
+      'Cada projeto é testado no celular, no tablet e no computador antes de ir ao ar.',
     ],
     eduTitle: 'Formação e cursos',
     edu: [
@@ -262,7 +262,7 @@ const en: Content = {
     paras: [
       "I'm Lucas Ribeiro, a developer based in Brazil. I started RibeiroLab to give small businesses a look of their own online and a direct path to WhatsApp. I work with clients anywhere, fully online.",
       'You talk to me from the first message to launch. No middlemen and no automated replies.',
-      'I have more than 8 years of experience in technical support, and every project is tested on phone, tablet and desktop before it goes live.',
+      'Every project is tested on phone, tablet and desktop before it goes live.',
     ],
     eduTitle: 'Education and courses',
     edu: [
