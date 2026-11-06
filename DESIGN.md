@@ -8,40 +8,36 @@
 
 ## Direção
 
-Placa de rua paulistana e vitrine de loja. Fundo claro e limpo, tinta azul-marinho e o azul das placas de rua de São Paulo como única cor de destaque. O elemento memorável é a **vitrine no topo**: sites reais de clientes (Nativa's Mel e Nina Store) em moldura de navegador e celular. Todo o resto é quieto.
-
-Fala em primeira pessoa ("eu"): o diferencial é falar direto com quem faz.
+Bloco azul com movimento. O próprio site mostra o poder de identidade visual da RibeiroLab: topo azul inteiro com título enorme, sites de clientes passando numa faixa, e uma seção de trabalhos em que a janela troca de projeto conforme a rolagem. Fala em primeira pessoa ("eu").
 
 ## Cores
 
 | Token | Hex | Uso |
 |---|---|---|
-| `papel` | `#F6F7F9` | fundo das seções alternadas |
-| `branco` | `#FFFFFF` | fundo principal, cartões |
-| `tinta` | `#1B2440` | texto e títulos |
-| `grafite` | `#545D72` | texto secundário (contraste 6,4:1 no papel) |
-| `placa` | `#1F4FD1` | botões, links, seção de contato |
-| `placa-escura` | `#173CA3` | hover dos botões |
-| `linha` | `#D9DEE7` | bordas e divisórias |
-| `sinal` | `#F2B705` | só no anel de foco do teclado |
+| `azul` (placa) | `#1840C8` | topo, botões principais, destaques |
+| `azul2` (placa-escura) | `#0F2C99` | rodapé, hover |
+| `tinta` | `#111633` | texto e seção de contato |
+| `sol` | `#FFD23F` | botões de ação sobre azul/escuro, hover dos ícones, foco |
+| `papel` | `#F4F6FB` | seções alternadas |
+| `cinza` (grafite) | `#5A6080` | texto secundário |
+| `linha` | `#DDE2EE` | bordas |
 
-O verde do WhatsApp aparece só no botão flutuante do WhatsApp.
+**Regra: nada de verde**, nem no botão do WhatsApp (ele usa o azul).
 
 ## Tipografia
 
-- **Archivo** (variável, auto-hospedada): a mesma família em tudo.
-- Títulos: peso 800, largura 112 (expandida, lembra letreiro), espaçamento -0.01em.
-- Texto: peso 400, largura 100, 17–18 px, altura de linha 1.6, até ~70 caracteres por linha.
-- Escala: 56/40/28/20/17/14 px no desktop.
-- Sem caixa-alta em rótulos, sem palavra destacada em cor dentro do título.
+Archivo variável, auto-hospedada. Títulos peso 900, largura 120%. Texto peso 400, largura 100%.
 
-## Layout
+## Movimento
 
-- Conteúdo alinhado à esquerda, largura máxima 1180 px.
-- Seções alternam `branco` e `papel`; o contato é um bloco `placa` com texto branco.
-- Raio: 10 px em molduras e botões, 6 px em campos. Sombra só nas molduras da vitrine.
-- Numeração apenas no "Como funciona" (é uma sequência real).
+- Título do topo sobe palavra por palavra ao abrir a página (uma vez).
+- Faixa contínua de sites no topo; pausa com mouse ou foco.
+- Trabalhos: janela fixa troca de projeto conforme a rolagem; no celular vira card com print.
+- Serviços: linha se pinta de azul ao passar o mouse ou focar.
+- Como funciona: linha azul se preenche com a rolagem.
+- Títulos de seção aparecem ao rolar.
+- Tudo desliga com "reduzir movimento" do sistema.
 
 ## O que não usar
 
-Degradês roxo/azul, efeito de vidro, foguetes e estrelas flutuando, brilho seguindo o mouse, granulado, selos em pílula com bolinha, rótulos em caixa-alta acima dos títulos, setas no fim dos botões, cartões idênticos repetidos, animação de entrada em cada seção.
+Verde (regra do cliente), degradês roxo/azul, efeito de vidro, foguetes e estrelas flutuando, brilho seguindo o mouse, granulado, selos em pílula com bolinha, rótulos em caixa-alta acima dos títulos, setas no fim dos botões, cartões idênticos repetidos, animação de entrada em cada seção.

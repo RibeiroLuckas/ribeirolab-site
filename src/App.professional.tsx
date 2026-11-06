@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react'
-import { Menu, X, Check, Mail, MessageCircle, Linkedin, Github } from 'lucide-react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { Menu, X, Mail, Linkedin, Github } from 'lucide-react'
 import CookieBanner, { CookiePreferencesLink } from '@/components/CookieBanner'
 import { trackConversion } from '@/lib/analytics'
 
@@ -15,141 +15,113 @@ const GITHUB = 'https://github.com/RibeiroLuckas/'
 const whatsappUrl = (text?: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`
 
-type Project = { title: string; kind: string; text: string; url: string; image: string }
+const vitrine = ['nativas-mel', 'nina-store', 'lumina-odonto', 'marcenaria-arte', 'automotion', 'silva-associados', 'salao-beleza', 'barbearia-modelo']
 
-const clientSites: Project[] = [
-  {
-    title: "Nativa's Mel",
-    kind: 'Loja virtual',
-    text: 'Catálogo de méis por florada com carrinho que monta o pedido e envia direto para o WhatsApp da empresa.',
-    url: 'https://nativasmel.netlify.app/',
-    image: '/projetos/nativas-mel.webp',
-  },
-  {
-    title: 'Nina Store',
-    kind: 'Catálogo de moda e calçados',
-    text: 'Vitrine das lojas físicas com Instagram integrado e compra pelo WhatsApp, pensada para o celular.',
-    url: 'https://nsninastore.netlify.app/',
-    image: '/projetos/nina-store.webp',
-  },
-]
+type Work = { title: string; kind: string; status: string; text: string; image: string; url?: string; video?: string }
 
-const models: Project[] = [
-  { title: 'Lumina Odonto Studio', kind: 'Clínica odontológica', text: 'Apresentação da clínica, especialidades e agendamento de consulta.', url: 'https://model-dentista.netlify.app/', image: '/projetos/lumina-odonto.webp' },
-  { title: 'Silva & Associados', kind: 'Escritório de advocacia', text: 'Áreas de atuação, equipe, perguntas frequentes e pedido de consultoria.', url: 'https://model-adv.netlify.app/', image: '/projetos/silva-associados.webp' },
-  { title: 'Marcenaria Arte', kind: 'Marcenaria', text: 'Portfólio de móveis planejados com pedido de orçamento.', url: 'https://model-marcenaria.netlify.app/', image: '/projetos/marcenaria-arte.webp' },
-  { title: 'AutoMotion', kind: 'Loja de veículos', text: 'Estoque de carros e motos com busca e simulação de financiamento.', url: 'https://model-motor.netlify.app/', image: '/projetos/automotion.webp' },
-  { title: 'Salão de beleza', kind: 'Salão e estética', text: 'Serviços por categoria com agenda integrada ao Trinks e ao WhatsApp.', url: 'https://seu-salao-aqui.netlify.app/', image: '/projetos/salao-beleza.webp' },
-  { title: 'Barbearia Modelo', kind: 'Barbearia', text: 'Cortes com preço e duração, e agendamento pelo Booksy.', url: 'https://sua-marca.netlify.app/', image: '/projetos/barbearia-modelo.webp' },
-]
-
-const pdvFeatures = [
-  'Leitor de código de barras: o item entra na hora',
-  'Pagamento combinado em até três formas, com troco calculado',
-  'Consulta em tempo real de qual loja tem a peça',
-  'Estoque por cor e tamanho, com entrada de mercadoria',
-  'Etiquetas com preço e código de barras',
+const works: Work[] = [
+  { title: "Nativa's Mel", kind: 'Loja virtual', status: 'Cliente', text: 'Catálogo por florada e carrinho que envia o pedido pronto para o WhatsApp da empresa.', image: '/projetos/nativas-mel.webp', url: 'https://nativasmel.netlify.app/' },
+  { title: 'Nina Store', kind: 'Catálogo de moda', status: 'Cliente', text: 'Vitrine das lojas físicas, Instagram integrado e compra pelo WhatsApp.', image: '/projetos/nina-store.webp', url: 'https://nsninastore.netlify.app/' },
+  { title: 'MeuPDV', kind: 'Sistema sob medida', status: 'Cliente, em uso em 3 lojas', text: 'Frente de caixa com estoque entre lojas, etiquetas com código de barras e pagamento combinado.', image: '/videos/meupdv-capa.jpg', video: '/videos/meupdv-apresentacao.mp4' },
+  { title: 'Lumina Odonto', kind: 'Clínica odontológica', status: 'Modelo para adaptar', text: 'Identidade elegante, especialidades e agendamento de consulta.', image: '/projetos/lumina-odonto.webp', url: 'https://model-dentista.netlify.app/' },
+  { title: 'Marcenaria Arte', kind: 'Marcenaria', status: 'Modelo para adaptar', text: 'Portfólio de móveis planejados com pedido de orçamento.', image: '/projetos/marcenaria-arte.webp', url: 'https://model-marcenaria.netlify.app/' },
+  { title: 'AutoMotion', kind: 'Loja de veículos', status: 'Modelo para adaptar', text: 'Estoque de carros e motos com busca e simulação de financiamento.', image: '/projetos/automotion.webp', url: 'https://model-motor.netlify.app/' },
 ]
 
 const offers = [
-  {
-    title: 'Ser encontrado',
-    who: 'Para quem precisa de um endereço na internet que passe confiança.',
-    items: ['Site institucional', 'Landing page para campanhas', 'Cardápio digital', 'Botão e mensagens prontas de WhatsApp'],
-    message: 'Olá! Quero um site para o meu negócio ser encontrado.',
-  },
-  {
-    title: 'Vender pela internet',
-    who: 'Para quem quer receber pedidos e agendamentos sem depender do telefone.',
-    items: ['Loja virtual e catálogo', 'Pedido montado e enviado pelo WhatsApp', 'Agendamento online', 'Integração com Trinks, Booksy e similares'],
-    message: 'Olá! Quero vender ou receber agendamentos pela internet.',
-  },
-  {
-    title: 'Organizar a operação',
-    who: 'Para quem tem uma rotina que já não cabe em planilha.',
-    items: ['Sistemas sob medida', 'Frente de caixa e estoque', 'Relatórios e automações', 'Treinamento da equipe'],
-    message: 'Olá! Quero conversar sobre um sistema sob medida.',
-  },
+  { title: 'Ser encontrado', text: 'Site institucional, landing page, cardápio digital e botão de WhatsApp.', message: 'Olá! Quero um site para o meu negócio ser encontrado.' },
+  { title: 'Vender pela internet', text: 'Loja virtual, catálogo com pedido no WhatsApp e agendamento online.', message: 'Olá! Quero vender ou receber agendamentos pela internet.' },
+  { title: 'Organizar a operação', text: 'Sistemas sob medida como o MeuPDV, em uso em 3 lojas.', message: 'Olá! Quero conversar sobre um sistema sob medida.' },
 ]
 
 const steps = [
-  { title: 'Conversa', text: 'Você me conta pelo WhatsApp o que o seu negócio precisa. Sem formulário longo.' },
-  { title: 'Proposta', text: 'Envio por escrito o que será feito, o prazo e o valor, antes de qualquer pagamento.' },
-  { title: 'Desenvolvimento', text: 'Você acompanha o site sendo feito e pede ajustes no caminho.' },
-  { title: 'No ar', text: 'Publico no seu domínio, conecto o WhatsApp e mostro como atualizar.' },
+  { title: 'Conversa', text: 'Você me conta pelo WhatsApp o que o seu negócio precisa.' },
+  { title: 'Proposta', text: 'Escopo, prazo e valor por escrito, antes de qualquer pagamento.' },
+  { title: 'Criação', text: 'Você acompanha o site sendo feito e pede ajustes.' },
+  { title: 'No ar', text: 'Publico, conecto o WhatsApp e mostro como atualizar.' },
+]
+
+const navLinks = [
+  { label: 'Trabalhos', href: '#trabalhos' },
+  { label: 'Serviços', href: '#servicos' },
+  { label: 'Como funciona', href: '#processo' },
+  { label: 'Sobre', href: '#sobre' },
 ]
 
 // ---------------------------------------------------------------------------
 // Peças
 // ---------------------------------------------------------------------------
-function Wordmark() {
-  return <span className="text-[22px] font-extrabold tracking-tight [font-stretch:115%]">RibeiroLab</span>
-}
-
-function BrowserFrame({ src, alt, className = '', eager = false }: { src: string; alt: string; className?: string; eager?: boolean }) {
+function WhatsAppIcon() {
   return (
-    <div className={`navegador ${className}`}>
-      <div className="navegador-barra" aria-hidden="true"><span /><span /><span /></div>
-      <img src={src} alt={alt} width={800} height={450} loading={eager ? 'eager' : 'lazy'} decoding="async" className="block aspect-video w-full object-cover object-top" />
-    </div>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z" />
+    </svg>
   )
 }
 
-function PhoneFrame({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+function WhatsAppLink({ children, className, message, label }: { children: ReactNode; className?: string; message?: string; label?: string }) {
   return (
-    <div className={`overflow-hidden rounded-[22px] border-[6px] border-tinta bg-tinta ${className}`}>
-      <img src={src} alt={alt} width={480} height={1039} loading="eager" decoding="async" className="block aspect-[9/17] w-full rounded-[16px] object-cover object-top" />
-    </div>
-  )
-}
-
-function SectionTitle({ title, intro }: { title: string; intro?: ReactNode }) {
-  return (
-    <div className="mb-10 max-w-2xl md:mb-14">
-      <h2 className="text-[32px] md:text-[40px]">{title}</h2>
-      {intro && <p className="mt-4 text-lg text-grafite">{intro}</p>}
-    </div>
-  )
-}
-
-function WhatsAppLink({ children, className, message }: { children: ReactNode; className: string; message?: string }) {
-  return (
-    <a href={whatsappUrl(message)} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion('whatsapp')} className={className}>
+    <a href={whatsappUrl(message)} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion('whatsapp')} className={className} aria-label={label}>
       {children}
     </a>
   )
 }
 
+function Win({ src, alt = '' }: { src: string; alt?: string }) {
+  return (
+    <div className="d-win">
+      <div className="d-win-barra" aria-hidden="true"><i /><i /><i /></div>
+      <img src={src} alt={alt} width={800} height={450} loading="lazy" decoding="async" />
+    </div>
+  )
+}
+
+/** Faz títulos aparecerem ao rolar (uma vez). */
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.d-rev')
+    if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return }
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
+    }), { threshold: 0.15 })
+    els.forEach(e => io.observe(e))
+    return () => io.disconnect()
+  }, [])
+}
+
 // ---------------------------------------------------------------------------
 // Seções
 // ---------------------------------------------------------------------------
-const navLinks = [
-  { label: 'Trabalhos', href: '#trabalhos' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Como funciona', href: '#como-funciona' },
-  { label: 'Sobre', href: '#sobre' },
-]
-
 function Header() {
+  const [solid, setSolid] = useState(false)
   const [open, setOpen] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.75)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <header className="sticky top-0 z-40 border-b border-linha bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-      <div className="pagina flex h-[68px] items-center justify-between gap-6">
-        <a href="#inicio" aria-label="RibeiroLab, início"><Wordmark /></a>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-7 whitespace-nowrap lg:flex">
-          {navLinks.map(l => <a key={l.href} href={l.href} className="font-medium text-grafite hover:text-tinta">{l.label}</a>)}
-          <a href="#contato" className="botao-principal py-2.5">Pedir orçamento</a>
+    <header className={`d-header ${solid ? 'solid' : ''} ${open ? 'aberto' : ''}`}>
+      <div className="d-wrap">
+        <a href="#inicio" className="d-logo" aria-label="RibeiroLab, início">RibeiroLab</a>
+        <nav aria-label="Navegação principal" className="d-nav flex items-center">
+          <span className="d-nav-links">
+            {navLinks.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+          </span>
+          <a href="#contato" className="d-btn d-nav-cta ml-7">Pedir orçamento</a>
+          <button type="button" onClick={() => setOpen(!open)} className="-mr-2 ml-4 rounded-md p-2 lg:hidden"
+            aria-label={open ? 'Fechar menu' : 'Abrir menu'} aria-expanded={open} aria-controls="menu-celular">
+            {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
+          </button>
         </nav>
-        <button type="button" onClick={() => setOpen(!open)} className="-mr-2 rounded-md p-2 lg:hidden"
-          aria-label={open ? 'Fechar menu' : 'Abrir menu'} aria-expanded={open} aria-controls="menu-celular">
-          {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
-        </button>
       </div>
       {open && (
-        <nav id="menu-celular" aria-label="Navegação principal" className="border-t border-linha bg-white lg:hidden">
-          <div className="pagina flex flex-col py-3">
+        <nav id="menu-celular" aria-label="Navegação principal" className="border-t border-linha bg-white text-tinta lg:hidden">
+          <div className="d-wrap flex flex-col py-3">
             {navLinks.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="py-3 text-lg font-medium">{l.label}</a>)}
-            <a href="#contato" onClick={() => setOpen(false)} className="botao-principal mb-2 mt-2">Pedir orçamento</a>
+            <a href="#contato" onClick={() => setOpen(false)} className="d-btn my-2">Pedir orçamento</a>
           </div>
         </nav>
       )}
@@ -158,188 +130,166 @@ function Header() {
 }
 
 function Hero() {
+  const words = 'Identidade que faz o cliente parar.'.split(' ')
   return (
-    <section id="inicio" className="overflow-hidden bg-papel">
-      <div className="pagina grid items-center gap-12 py-14 md:py-20 lg:grid-cols-[1fr_1.05fr] lg:gap-10">
-        <div className="max-w-xl">
-          <h1 className="text-[40px] sm:text-[52px] lg:text-[58px]">Sites para pequenos negócios venderem pelo WhatsApp.</h1>
-          <p className="mt-6 text-lg text-grafite md:text-xl">
-            Eu crio o site da sua loja, restaurante ou consultório e deixo tudo pronto para o cliente chamar você
-            no WhatsApp. Você fala direto comigo, do primeiro contato à publicação.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <WhatsAppLink className="botao-principal" message="Olá! Vi o site da RibeiroLab e quero um orçamento.">
-              <MessageCircle className="h-5 w-5" aria-hidden="true" /> Pedir orçamento no WhatsApp
-            </WhatsAppLink>
-            <a href="#trabalhos" className="botao-contorno">Ver trabalhos</a>
-          </div>
-        </div>
-
-        {/* Vitrine: sites de clientes no ar */}
-        <figure className="relative pb-10 sm:pb-14 lg:pl-6">
-          <BrowserFrame src="/projetos/nativas-mel.webp" alt="Página inicial do site da Nativa's Mel" eager className="shadow-[0_24px_60px_-24px_rgba(27,36,64,0.45)]" />
-          <PhoneFrame src="/projetos/nina-store-celular.webp" alt="Site da Nina Store aberto no celular"
-            className="absolute -bottom-2 right-3 w-[30%] max-w-[190px] shadow-[0_24px_50px_-20px_rgba(27,36,64,0.55)] sm:right-6" />
-          <figcaption className="mt-4 max-w-[62%] text-sm text-grafite">Sites da Nativa's Mel e da Nina Store, clientes com o site no ar.</figcaption>
-        </figure>
-      </div>
-    </section>
-  )
-}
-
-function ClientStrip() {
-  return (
-    <section aria-label="Clientes" className="border-y border-linha bg-white">
-      <div className="pagina flex flex-col gap-3 py-6 text-grafite sm:flex-row sm:items-center sm:gap-10">
-        <p className="whitespace-nowrap font-semibold text-tinta">Quem já usa</p>
-        <ul className="flex flex-wrap gap-x-10 gap-y-2 text-lg font-bold [font-stretch:110%]">
-          <li><a href="https://nativasmel.netlify.app/" target="_blank" rel="noopener noreferrer" className="hover:text-placa">Nativa's Mel</a></li>
-          <li><a href="https://nsninastore.netlify.app/" target="_blank" rel="noopener noreferrer" className="hover:text-placa">Nina Store</a></li>
-          <li><a href="#meupdv" className="hover:text-placa">Rede de 3 lojas com o MeuPDV</a></li>
-        </ul>
-      </div>
-    </section>
-  )
-}
-
-function Work() {
-  return (
-    <section id="trabalhos" className="scroll-mt-20 bg-white py-20 md:py-28">
-      <div className="pagina">
-        <SectionTitle title="Trabalhos" intro="Um sistema e sites em uso por negócios de verdade, além de modelos prontos para adaptar à sua marca." />
-
-        {/* MeuPDV */}
-        <article id="meupdv" className="scroll-mt-24 grid gap-10 rounded-moldura bg-papel p-6 md:p-10 lg:grid-cols-[1fr_1.35fr] lg:items-center">
-          <div>
-            <p className="font-semibold text-placa">Sistema em uso em 3 lojas</p>
-            <h3 className="mt-2 text-[28px]">MeuPDV</h3>
-            <p className="mt-4 text-grafite">
-              Frente de caixa feito sob medida para uma rede de lojas de roupas. Antes, saber se outra loja tinha a peça
-              dependia de um telefonema. Agora a resposta aparece na tela do caixa.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {pdvFeatures.map(f => (
-                <li key={f} className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-placa" aria-hidden="true" /><span>{f}</span></li>
-              ))}
-            </ul>
-          </div>
-          <figure>
-            <video src="/videos/meupdv-apresentacao.mp4" poster="/videos/meupdv-capa.jpg" controls muted playsInline preload="none"
-              width={1280} height={720} aria-label="Vídeo de apresentação do MeuPDV"
-              className="aspect-video w-full rounded-moldura border border-linha bg-tinta" />
-            <figcaption className="mt-3 text-sm text-grafite">Apresentação do sistema com dados de demonstração.</figcaption>
-          </figure>
-        </article>
-
-        {/* Sites de clientes */}
-        <h3 className="mt-20 text-[24px]">Sites de clientes</h3>
-        <div className="mt-8 grid gap-10 md:grid-cols-2">
-          {clientSites.map(p => (
-            <article key={p.title}>
-              <a href={p.url} target="_blank" rel="noopener noreferrer" className="block rounded-moldura" tabIndex={-1} aria-hidden="true">
-                <BrowserFrame src={p.image} alt="" className="transition-colors hover:border-placa" />
-              </a>
-              <h4 className="mt-5 text-xl">{p.title}</h4>
-              <p className="text-sm font-medium text-placa">{p.kind}</p>
-              <p className="mt-2 text-grafite">{p.text}</p>
-              <a href={p.url} target="_blank" rel="noopener noreferrer" className="link mt-3 inline-block">Visitar o site<span className="sr-only"> da {p.title} (abre em nova aba)</span></a>
-            </article>
+    <section id="inicio" className="d-hero">
+      <div className="d-wrap">
+        <h1 className="d-h" aria-label="Identidade que faz o cliente parar.">
+          {words.map((w, i) => (
+            <span key={i} aria-hidden="true">
+              <span className="d-palavra"><span style={{ animationDelay: `${i * 0.08}s` }}>{w}</span></span>{i < words.length - 1 ? ' ' : ''}
+            </span>
           ))}
-        </div>
-
-        {/* Modelos */}
-        <div className="mt-20 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <h3 className="text-[24px]">Modelos prontos para adaptar</h3>
-          <p className="text-grafite md:max-w-md">Sites de demonstração por ramo. Trocamos marca, fotos e textos pelos do seu negócio.</p>
-        </div>
-        <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {models.map(p => (
-            <article key={p.title}>
-              <a href={p.url} target="_blank" rel="noopener noreferrer" className="block rounded-moldura" aria-label={`Ver o modelo ${p.title} (abre em nova aba)`}>
-                <BrowserFrame src={p.image} alt="" className="transition-colors hover:border-placa" />
-              </a>
-              <h4 className="mt-4 text-lg">{p.title}</h4>
-              <p className="text-sm text-grafite">{p.kind}. {p.text}</p>
-            </article>
-          ))}
+        </h1>
+        <div className="d-hero-linha">
+          <p>Sites, lojas virtuais e sistemas para pequenos negócios, com visual próprio e pedidos chegando no WhatsApp. Você fala direto com quem cria.</p>
+          <WhatsAppLink className="d-btn" message="Olá! Vi o site da RibeiroLab e quero um orçamento."><WhatsAppIcon /> Pedir orçamento</WhatsAppLink>
         </div>
       </div>
-    </section>
-  )
-}
-
-function Services() {
-  return (
-    <section id="servicos" className="scroll-mt-20 bg-papel py-20 md:py-28">
-      <div className="pagina">
-        <SectionTitle title="O que eu faço" intro="Escolha pelo que o seu negócio precisa agora. Dá para começar pequeno e crescer depois." />
-        <div className="grid gap-12 md:grid-cols-3 md:gap-8">
-          {offers.map(o => (
-            <div key={o.title} className="flex flex-col border-t-4 border-placa pt-6">
-              <h3 className="text-[24px]">{o.title}</h3>
-              <p className="mt-3 text-grafite">{o.who}</p>
-              <ul className="mt-5 flex-1 space-y-2.5">
-                {o.items.map(i => <li key={i} className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-placa" aria-hidden="true" />{i}</li>)}
-              </ul>
-              <WhatsAppLink className="link mt-6 self-start" message={o.message}>Conversar sobre isso</WhatsAppLink>
+      <div className="d-faixa" aria-label="Sites feitos pela RibeiroLab">
+        <div className="d-trilho">
+          {[...vitrine, ...vitrine].map((v, i) => (
+            <div key={i} aria-hidden={i >= vitrine.length ? true : undefined}>
+              <Win src={`/projetos/${v}.webp`} />
             </div>
           ))}
         </div>
-        <p className="mt-14 max-w-2xl text-grafite">
-          Também cuido de anúncios no Google e no Instagram, com medição de quantas pessoas chamam no WhatsApp,
-          para o site receber visitas desde o primeiro dia.
+      </div>
+    </section>
+  )
+}
+
+function Trabalhos() {
+  const [active, setActive] = useState(0)
+  const stepRefs = useRef<(HTMLLIElement | null)[]>([])
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i))
+    }), { rootMargin: '-45% 0px -45% 0px' })
+    stepRefs.current.forEach(el => el && io.observe(el))
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!works[active].video) videoRef.current?.pause()
+  }, [active])
+
+  return (
+    <section id="trabalhos" className="d-sec scroll-mt-16">
+      <div className="d-wrap">
+        <div className="d-intro d-rev">
+          <h2 className="d-h d-h2">Trabalhos</h2>
+          <p>Role a página: cada projeto aparece na tela ao lado. Clientes reais e modelos prontos para receber a sua marca.</p>
+        </div>
+        <div className="d-scrolly">
+          <ol className="d-steps">
+            {works.map((w, i) => (
+              <li key={w.title} data-i={i} ref={el => { stepRefs.current[i] = el }} className={`d-step ${active === i ? 'on' : ''}`}>
+                <span className="d-step-tipo">{w.kind}</span>
+                <h3 className="d-h">{w.title}</h3>
+                <p>{w.text}</p>
+                <span className="d-step-status">{w.status}</span>
+                <img className="d-step-img" src={w.image} alt="" loading="lazy" decoding="async" width={800} height={450} />
+                {w.url && <><br /><a className="d-step-link" href={w.url} target="_blank" rel="noopener noreferrer">{w.status === 'Cliente' ? 'Visitar o site' : 'Ver o modelo'}<span className="sr-only"> {w.title} (abre em nova aba)</span></a></>}
+                {w.video && <><br /><a className="d-step-link" href={w.video} target="_blank" rel="noopener noreferrer">Assistir ao vídeo do sistema</a></>}
+              </li>
+            ))}
+          </ol>
+          <div className="d-palco" aria-hidden="true">
+            <div className="d-win">
+              <div className="d-win-barra"><i /><i /><i /></div>
+              <div className="d-tela">
+                {works.map((w, i) => w.video
+                  ? <video key={w.title} ref={videoRef} className={active === i ? 'on' : ''} src={w.video} poster={w.image} controls muted playsInline preload="none" tabIndex={-1} />
+                  : <img key={w.title} className={active === i ? 'on' : ''} src={w.image} alt="" loading="lazy" decoding="async" />)}
+              </div>
+            </div>
+            <div className="d-contador"><b>{String(active + 1).padStart(2, '0')}</b> / {String(works.length).padStart(2, '0')}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Servicos() {
+  return (
+    <section id="servicos" className="d-sec d-serv scroll-mt-16">
+      <div className="d-wrap">
+        <h2 className="d-h d-h2 d-rev">O que eu faço</h2>
+        <div className="d-lista">
+          {offers.map((o, i) => (
+            <div key={o.title} className="d-item">
+              <b aria-hidden="true">{i + 1}</b>
+              <h3 className="d-h">{o.title}</h3>
+              <p>{o.text}</p>
+              <WhatsAppLink message={o.message}>Conversar sobre isso</WhatsAppLink>
+            </div>
+          ))}
+        </div>
+        <p className="mt-10 max-w-2xl text-grafite">
+          Também cuido de anúncios no Google e no Instagram, com medição de quantas pessoas chamam no WhatsApp.
         </p>
       </div>
     </section>
   )
 }
 
-function HowItWorks() {
+function Processo() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const onScroll = () => {
+      const r = el.getBoundingClientRect()
+      const p = Math.min(1, Math.max(0, (window.innerHeight * 0.85 - r.top) / (r.height + window.innerHeight * 0.3)))
+      el.style.setProperty('--pr', `${p * 100}%`)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   return (
-    <section id="como-funciona" className="scroll-mt-20 bg-white py-20 md:py-28">
-      <div className="pagina">
-        <SectionTitle title="Como funciona" />
-        <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          {steps.map((s, i) => (
-            <li key={s.title}>
-              <span className="block text-5xl font-extrabold text-placa [font-stretch:120%]" aria-hidden="true">{i + 1}</span>
-              <h3 className="mt-3 text-xl">{s.title}</h3>
-              <p className="mt-2 text-grafite">{s.text}</p>
-            </li>
-          ))}
-        </ol>
+    <section id="processo" className="d-sec scroll-mt-16">
+      <div className="d-wrap">
+        <h2 className="d-h d-h2 d-rev">Como funciona</h2>
+        <div className="d-proc-wrap" ref={ref}>
+          <div className="d-proc-linha" aria-hidden="true"><i /></div>
+          <ol className="d-proc">
+            {steps.map(s => (
+              <li key={s.title}><h3 className="d-h">{s.title}</h3><p>{s.text}</p></li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   )
 }
 
-function About() {
+function Sobre() {
   return (
-    <section id="sobre" className="scroll-mt-20 bg-papel py-20 md:py-28">
-      <div className="pagina grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+    <section id="sobre" className="d-sec d-sobre scroll-mt-16">
+      <div className="d-wrap d-sobre-grade">
         <div>
-          <h2 className="text-[32px] md:text-[40px]">Quem faz</h2>
-          <div className="mt-6 max-w-[62ch] space-y-4 text-lg">
+          <h2 className="d-h d-h2 d-rev">Quem faz</h2>
+          <div className="mt-8 max-w-[62ch] space-y-4 text-lg">
             <p>
-              Sou o Lucas Ribeiro, desenvolvedor em São Paulo. Criei a RibeiroLab para fazer sites e sistemas que resolvem
-              problemas reais de pequenos negócios: aparecer no Google, receber pedidos pelo WhatsApp e organizar o dia a dia.
+              Sou o Lucas Ribeiro, desenvolvedor em São Paulo. Criei a RibeiroLab para dar a pequenos negócios um visual
+              próprio na internet e um caminho direto até o WhatsApp.
             </p>
-            <p>Você fala direto comigo, do primeiro contato à publicação. Sem intermediário e sem resposta automática.</p>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="botao-contorno py-2.5"><Linkedin className="h-4 w-4" aria-hidden="true" />LinkedIn</a>
-            <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="botao-contorno py-2.5"><Github className="h-4 w-4" aria-hidden="true" />GitHub</a>
+            <p>Você fala comigo do primeiro contato à publicação. Sem intermediário e sem resposta automática.</p>
           </div>
         </div>
         <div>
-          <h3 className="text-xl">Formação</h3>
-          <ul className="mt-4 divide-y divide-linha border-y border-linha">
-            {[
-              'Análise e Desenvolvimento de Sistemas (em curso)',
-              'Certificações em Java e Spring Boot',
-              'Certificações Databricks em engenharia de dados e IA generativa',
-              'Bootcamps de back-end com Java e soluções com inteligência artificial',
-            ].map(i => <li key={i} className="py-3.5">{i}</li>)}
+          <h3 className="d-h text-2xl">Formação</h3>
+          <ul className="mt-5">
+            <li>Análise e Desenvolvimento de Sistemas (em curso)</li>
+            <li>Certificações em Java e Spring Boot</li>
+            <li>Certificações Databricks em engenharia de dados e IA generativa</li>
+            <li>Bootcamps de back-end com Java e soluções com inteligência artificial</li>
           </ul>
         </div>
       </div>
@@ -347,11 +297,10 @@ function About() {
   )
 }
 
-const fieldClass = 'w-full rounded-md border border-linha bg-white px-4 py-3 text-tinta placeholder:text-grafite/70 focus:border-placa'
+const fieldClass = 'w-full rounded-lg border border-linha bg-white px-4 py-3 text-tinta placeholder:text-grafite/70 focus:border-placa'
 
-function Contact() {
+function Contato() {
   const [sent, setSent] = useState(false)
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -368,31 +317,23 @@ function Contact() {
   }
 
   return (
-    <section id="contato" className="scroll-mt-20 bg-placa py-20 text-white md:py-28">
-      <div className="pagina grid gap-12 lg:grid-cols-2 lg:gap-16">
+    <section id="contato" className="d-cta scroll-mt-16">
+      <div className="d-grande" aria-hidden="true">RibeiroLab</div>
+      <div className="d-wrap d-cta-grade">
         <div>
-          <h2 className="text-[32px] text-white md:text-[40px]">Vamos conversar sobre o seu site?</h2>
-          <p className="mt-5 max-w-lg text-lg text-white/85">
-            Conte o que o seu negócio faz e o que você precisa. Respondo pelo WhatsApp com as próximas etapas.
-          </p>
-          <ul className="mt-8 space-y-4 text-lg">
-            <li>
-              <WhatsAppLink className="inline-flex items-center gap-3 font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-white">
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />WhatsApp {WHATSAPP_DISPLAY}
-              </WhatsAppLink>
-            </li>
-            <li>
-              <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-3 break-all font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-white">
-                <Mail className="h-5 w-5 shrink-0" aria-hidden="true" />{EMAIL}
-              </a>
-            </li>
+          <h2 className="d-h d-rev">Vamos dar uma cara nova para o seu negócio?</h2>
+          <p className="mt-6 max-w-lg text-lg text-white/80">Conte o que você precisa. Respondo pelo WhatsApp com as próximas etapas.</p>
+          <WhatsAppLink className="d-btn mt-8" message="Olá! Vi o site da RibeiroLab e quero um orçamento."><WhatsAppIcon /> Chamar no WhatsApp</WhatsAppLink>
+          <ul className="mt-10 space-y-3 text-lg">
+            <li><WhatsAppLink className="underline decoration-white/30 underline-offset-4 hover:decoration-white">WhatsApp {WHATSAPP_DISPLAY}</WhatsAppLink></li>
+            <li><a href={`mailto:${EMAIL}`} className="break-all underline decoration-white/30 underline-offset-4 hover:decoration-white">{EMAIL}</a></li>
           </ul>
         </div>
 
-        <div className="rounded-moldura bg-white p-6 text-tinta md:p-8">
+        <div className="rounded-2xl bg-white p-6 text-tinta md:p-8">
           {sent ? (
             <div className="py-8" role="status">
-              <p className="text-2xl font-extrabold [font-stretch:112%]">Mensagem pronta no WhatsApp</p>
+              <p className="d-h text-2xl">Mensagem pronta no WhatsApp</p>
               <p className="mt-3 text-grafite">Abri uma conversa com o seu texto. Toque em enviar por lá para eu receber.</p>
               <button type="button" onClick={() => setSent(false)} className="link mt-6">Escrever outra mensagem</button>
             </div>
@@ -417,7 +358,7 @@ function Contact() {
                 <label htmlFor="message" className="mb-1.5 block font-medium">Mensagem</label>
                 <textarea id="message" name="message" required rows={4} className={`${fieldClass} resize-none`} placeholder="Ex.: tenho uma loja de roupas e quero vender pelo Instagram e WhatsApp" />
               </div>
-              <button type="submit" className="botao-principal w-full">Enviar pelo WhatsApp</button>
+              <button type="submit" className="w-full rounded-full bg-placa px-6 py-4 font-bold text-white transition-colors hover:bg-placa-escura">Enviar pelo WhatsApp</button>
               <p className="text-sm text-grafite">
                 O formulário abre o WhatsApp com a sua mensagem. Veja a <a href="/politica-de-privacidade/" className="link font-medium">Política de Privacidade</a>.
               </p>
@@ -429,56 +370,54 @@ function Contact() {
   )
 }
 
-function Footer() {
+function Rodape() {
+  const icon = 'd-icone'
   return (
-    <footer className="bg-tinta py-12 text-white/75">
-      <div className="pagina flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-        <div>
-          <span className="text-white"><Wordmark /></span>
-          <p className="mt-2">Sites e sistemas para pequenos negócios, em São Paulo.</p>
+    <footer className="d-rodape">
+      <div className="d-wrap">
+        <div className="d-rodape-topo">
+          <div>
+            <a href="#inicio" className="d-logo text-white">RibeiroLab</a>
+            <p className="mt-2 max-w-sm">Sites, lojas virtuais e sistemas para pequenos negócios, em São Paulo.</p>
+            <div className="d-icones">
+              <WhatsAppLink className={icon} label="Conversar pelo WhatsApp"><WhatsAppIcon /></WhatsAppLink>
+              <a className={icon} href={`mailto:${EMAIL}`} aria-label="Enviar e-mail"><Mail aria-hidden="true" /></a>
+              <a className={icon} href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Lucas Ribeiro (abre em nova aba)"><Linkedin aria-hidden="true" /></a>
+              <a className={icon} href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lucas Ribeiro (abre em nova aba)"><Github aria-hidden="true" /></a>
+            </div>
+          </div>
+          <nav aria-label="Rodapé">
+            {navLinks.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+            <a href="#contato">Contato</a>
+            <a href="/politica-de-privacidade/">Política de Privacidade</a>
+            <CookiePreferencesLink />
+          </nav>
         </div>
-        <nav aria-label="Rodapé" className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-8">
-          {navLinks.map(l => <a key={l.href} href={l.href} className="hover:text-white">{l.label}</a>)}
-          <a href="/politica-de-privacidade/" className="hover:text-white">Política de Privacidade</a>
-          <CookiePreferencesLink className="text-left hover:text-white" />
-        </nav>
+        <div className="d-rodape-base">© {new Date().getFullYear()} RibeiroLab. Lucas Ribeiro, São Paulo.</div>
       </div>
-      <div className="pagina mt-10 text-sm text-white/60">© {new Date().getFullYear()} RibeiroLab. Lucas Ribeiro, São Paulo.</div>
     </footer>
   )
 }
 
-function WhatsAppButton() {
-  return (
-    <a href={whatsappUrl('Olá, RibeiroLab! Vim pelo site.')} target="_blank" rel="noopener noreferrer" aria-label="Conversar pelo WhatsApp" title="Conversar pelo WhatsApp"
-      onClick={() => trackConversion('whatsapp')}
-      className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg transition-transform hover:scale-105">
-      <svg className="h-7 w-7 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-      </svg>
-    </a>
-  )
-}
-
 export default function App() {
+  useReveal()
   return (
-    <>
-      <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-tinta focus:px-4 focus:py-2 focus:text-white">
+    <div className="d-body">
+      <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-tinta">
         Pular para o conteúdo
       </a>
       <Header />
       <main id="conteudo">
         <Hero />
-        <ClientStrip />
-        <Work />
-        <Services />
-        <HowItWorks />
-        <About />
-        <Contact />
+        <Trabalhos />
+        <Servicos />
+        <Processo />
+        <Sobre />
+        <Contato />
       </main>
-      <Footer />
-      <WhatsAppButton />
+      <Rodape />
+      <WhatsAppLink className="d-wa" label="Conversar pelo WhatsApp" message="Olá, RibeiroLab! Vim pelo site."><WhatsAppIcon /></WhatsAppLink>
       <CookieBanner />
-    </>
+    </div>
   )
 }
