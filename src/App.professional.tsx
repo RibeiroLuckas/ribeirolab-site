@@ -393,17 +393,9 @@ function Sobre() {
   return (
     <section id="sobre" className="d-sec d-sobre scroll-mt-16">
       <div className="d-wrap d-sobre-grade">
-        <div>
-          <h2 className="d-h d-h2 d-rev">{t.sobre.title}</h2>
-          <div className="mt-8 max-w-[62ch] space-y-4 text-lg">
-            {t.sobre.paras.map(p => <p key={p}>{p}</p>)}
-          </div>
-        </div>
-        <div>
-          <h3 className="d-h text-2xl">{t.sobre.eduTitle}</h3>
-          <ul className="mt-5">
-            {t.sobre.edu.map(e => <li key={e.t} className="d-edu"><strong>{e.t}</strong><span>{e.s}</span></li>)}
-          </ul>
+        <h2 className="d-h d-h2 d-rev">{t.sobre.title}</h2>
+        <div className="d-sobre-texto">
+          {t.sobre.paras.map(p => <p key={p}>{p}</p>)}
         </div>
       </div>
     </section>
