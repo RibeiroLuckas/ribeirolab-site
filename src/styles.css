@@ -269,20 +269,17 @@
 .dm-item b { white-space: nowrap; font-weight: 700; }
 @keyframes dm-rola { to { transform: translateY(-50%); } }
 
-/* Logo */
-.dm-logo { display: flex; align-items: center; gap: 12px; padding: 0 18px; color: #fff; }
-.dm-logo-marca { width: 74px; height: 74px; flex: none; background: #111633; border-radius: 18px; padding: 6px; }
-.dm-raios line { stroke-dasharray: 20; stroke-dashoffset: 20; }
-.d-card.in .dm-raios line { animation: dm-desenha 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-.d-card.in .dm-raios line:nth-child(2) { animation-delay: 0.1s; } .d-card.in .dm-raios line:nth-child(3) { animation-delay: 0.2s; }
-.d-card.in .dm-raios line:nth-child(4) { animation-delay: 0.3s; } .d-card.in .dm-raios line:nth-child(5) { animation-delay: 0.4s; }
-.d-tile > a:hover .dm-raios line { animation: dm-desenha 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-@keyframes dm-desenha { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
-.dm-logo-nome { display: flex; flex-direction: column; line-height: 1; }
-.dm-logo-nome b { font-size: 26px; font-weight: 900; font-stretch: 120%; letter-spacing: -0.02em; }
-.dm-logo-nome small { font-size: 11px; margin-top: 4px; opacity: 0.85; }
-.dm-logo-cores { position: absolute; right: 16px; top: 16px; display: flex; gap: 4px; }
-.dm-logo-cores i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); }
+/* Logo (Nina Store) */
+.dm-logo { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 6px 18px 0; }
+.dm-logo-img { position: relative; display: block; width: 100%; max-width: 230px; border-radius: 12px; overflow: hidden; box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6); transform: rotate(-2deg); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.dm-logo-img img { display: block; width: 100%; height: auto; }
+.dm-logo-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%); transform: translateX(-120%); }
+.d-card.in .dm-logo-img::after { animation: dm-brilho 1.2s ease 0.4s; }
+.d-tile > a:hover .dm-logo-img { transform: rotate(0deg) scale(1.04); }
+.d-tile > a:hover .dm-logo-img::after { animation: dm-brilho 1s ease; }
+@keyframes dm-brilho { to { transform: translateX(120%); } }
+.dm-logo-cores { position: absolute; right: 16px; top: 14px; display: flex; gap: 4px; }
+.dm-logo-cores i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.4); }
 
 /* Anúncio animado */
 .dm-ad { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; padding: 0 20px; align-items: center; }
@@ -308,7 +305,7 @@
 @media (prefers-reduced-motion: reduce) {
   .dm-cel-rola, .dm-ad-card, .dm-ad-btn, .dm-ad-dedo { animation: none !important; }
   .dm-bolha { animation: none !important; opacity: 1; transform: none; }
-  .dm-raios line { stroke-dashoffset: 0 !important; animation: none !important; }
+  .dm-logo-img::after { animation: none !important; }
 }
 
 /* Serviços: linha se pinta de azul */
@@ -419,3 +416,7 @@
 .d-lang { margin-left: 22px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; padding: 6px 10px; border-radius: 8px; border: 1.5px solid currentColor; opacity: 0.9; transition: opacity 0.2s, background 0.2s; }
 .d-lang:hover { opacity: 1; background: rgba(255, 255, 255, 0.12); }
 .d-header.solid .d-lang:hover { background: var(--papel); }
+@media (min-width: 561px) {
+  .dm-logo-cores { display: none; }
+  .dm-logo-img { max-width: 210px; }
+}

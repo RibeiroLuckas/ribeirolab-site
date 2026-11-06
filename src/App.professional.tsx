@@ -259,17 +259,8 @@ function DemoLogo() {
   const d = useT().produzir.demo
   return (
     <span className="dm-logo">
-      <svg viewBox="0 0 120 120" className="dm-logo-marca">
-        <circle cx="60" cy="72" r="26" fill="#FFD23F" />
-        <rect x="18" y="72" width="84" height="40" fill="#1840C8" />
-        <g stroke="#FFD23F" strokeWidth="6" strokeLinecap="round" className="dm-raios">
-          <line x1="60" y1="36" x2="60" y2="22" /><line x1="34" y1="46" x2="25" y2="36" /><line x1="86" y1="46" x2="95" y2="36" />
-          <line x1="24" y1="66" x2="11" y2="62" /><line x1="96" y1="66" x2="109" y2="62" />
-        </g>
-        <rect x="18" y="72" width="84" height="5" fill="#fff" />
-      </svg>
-      <span className="dm-logo-nome"><b>{d.logoName}</b><small>{d.logoTag}</small></span>
-      <span className="dm-logo-cores"><i style={{ background: '#FFD23F' }} /><i style={{ background: '#fff' }} /><i style={{ background: '#111633' }} /></span>
+      <span className="dm-logo-img"><img src="/projetos/nina-logo.webp" alt={d.logoAlt} width={800} height={400} loading="lazy" decoding="async" /></span>
+      <span className="dm-logo-cores"><i style={{ background: '#E52128' }} /><i style={{ background: '#fff' }} /><i style={{ background: '#C9CCD3' }} /></span>
     </span>
   )
 }
