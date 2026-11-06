@@ -114,8 +114,8 @@ const pt = {
     ],
     eduTitle: 'Formação e cursos',
     edu: [
-      { t: 'Tecnólogo em Gestão da Tecnologia', s: 'UNIP, concluído' },
-      { t: 'Análise e Desenvolvimento de Sistemas', s: 'UNIP, em andamento' },
+      { t: 'Tecnólogo em Gestão da Tecnologia', s: 'UNIP' },
+      { t: 'Análise e Desenvolvimento de Sistemas', s: 'UNIP' },
       { t: 'Java Fundamentals, Java Foundations e Java Programming', s: 'SENAI em parceria com a Oracle' },
       { t: 'Desenvolvimento de API REST com Spring Boot', s: 'SENAI' },
       { t: 'Front-end do Zero', s: 'Bootcamp Ri Happy' },
@@ -266,8 +266,8 @@ const en: Content = {
     ],
     eduTitle: 'Education and courses',
     edu: [
-      { t: 'Technology Management degree', s: 'UNIP, completed' },
-      { t: 'Systems Analysis and Development degree', s: 'UNIP, in progress' },
+      { t: 'Technology Management degree', s: 'UNIP' },
+      { t: 'Systems Analysis and Development degree', s: 'UNIP' },
       { t: 'Java Fundamentals, Java Foundations and Java Programming', s: 'SENAI in partnership with Oracle' },
       { t: 'REST API development with Spring Boot', s: 'SENAI' },
       { t: 'Front-end from Scratch', s: 'Ri Happy Bootcamp' },
