@@ -291,10 +291,8 @@ function Projects() {
         <article className="relative overflow-hidden rounded-3xl border border-purple-500/30 bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-transparent p-6 md:p-10 mb-12">
           <div className="grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-10 items-center">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-green-500/15 border border-green-400/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-green-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400" aria-hidden="true" /> Em produção · 3 lojas
-              </span>
-              <h3 className="text-3xl font-bold text-white mt-4 mb-3">MeuPDV</h3>
+              <p className="text-sm font-semibold uppercase tracking-wider text-green-300">Em produção em 3 lojas</p>
+              <h3 className="text-3xl font-bold text-white mt-2 mb-3">MeuPDV</h3>
               <p className="text-gray-300 text-lg leading-relaxed mb-5">
                 Frente de caixa desenvolvido sob medida para uma rede de lojas de roupas. Antes, saber se outra loja tinha
                 a peça dependia de um telefonema — agora a resposta aparece na tela do caixa.
@@ -327,16 +325,14 @@ function Projects() {
             <article key={project.title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] flex flex-col">
               <div className="relative h-48 overflow-hidden bg-gradient-to-br from-purple-900/40 to-blue-900/40">
                 <ProjectMedia project={project} />
-                {project.live ? (
-                  <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-green-600/90 backdrop-blur px-3 py-1 text-xs font-semibold text-white">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" aria-hidden="true" /> Em produção
-                  </span>
-                ) : (
-                  <span className="absolute top-3 left-3 rounded-full bg-black/60 backdrop-blur px-3 py-1 text-xs font-semibold text-white">Modelo</span>
-                )}
               </div>
               <div className="p-6 flex flex-col flex-1">
-                <span className="text-xs uppercase tracking-wider text-purple-300">{project.type}</span>
+                <p className="text-xs uppercase tracking-wider text-purple-300">
+                  {project.type} ·{' '}
+                  {project.live
+                    ? <span className="font-semibold text-green-300">Em produção</span>
+                    : <span className="text-gray-400">Modelo</span>}
+                </p>
                 <h4 className="text-xl font-bold text-white mt-2 mb-2">{project.title}</h4>
                 <p className="text-gray-300 text-sm leading-relaxed flex-1">{project.text}</p>
                 <a href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white font-semibold text-sm mt-5 hover:text-purple-300 transition-colors">
