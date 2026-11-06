@@ -118,7 +118,7 @@
 
 /* Topo */
 .d-hero { background: var(--azul); color: #fff; padding: 150px 0 0; overflow: hidden; }
-.d-hero h1 { color: #fff; font-size: clamp(50px, 9.2vw, 140px); max-width: 1150px; }
+.d-hero h1 { color: #fff; font-size: clamp(46px, 7.8vw, 120px); max-width: 1150px; }
 .d-palavra { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
 .d-palavra > span { display: inline-block; transform: translateY(105%); animation: d-sobe 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 @keyframes d-sobe { to { transform: none; } }
@@ -166,6 +166,42 @@
 .d-contador { margin-top: 18px; font-weight: 700; font-stretch: 120%; font-size: 15px; color: var(--cinza); }
 .d-contador b { color: var(--azul); }
 
+/* Sistemas: MeuPDV em destaque */
+.d-sis { background: var(--azul); color: #fff; overflow: hidden; }
+.d-sis .d-h2 { color: #fff; font-size: clamp(56px, 10vw, 150px); }
+.d-sis-topo { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; }
+.d-sis-rotulo { margin: 0 0 6px; font-weight: 700; color: var(--sol); font-size: 18px; }
+.d-sis-num { display: flex; align-items: center; gap: 14px; }
+.d-sis-num b { font-size: clamp(80px, 11vw, 160px); line-height: 0.8; color: var(--sol); }
+.d-sis-num span { font-weight: 600; line-height: 1.3; color: rgba(255, 255, 255, 0.85); }
+.d-sis-intro { max-width: 640px; font-size: 21px; color: rgba(255, 255, 255, 0.88); margin: 28px 0 56px; }
+.d-sis-grade { display: grid; grid-template-columns: 1.55fr 1fr; gap: 48px; align-items: start; }
+.d-sis-video { margin: 0; }
+.d-sis-video .d-win { border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.7); }
+.d-sis-video video { display: block; width: 100%; aspect-ratio: 16 / 9; background: var(--tinta); }
+.d-sis-video figcaption { margin-top: 12px; font-size: 14px; color: rgba(255, 255, 255, 0.7); }
+.d-sis-lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255, 255, 255, 0.25); }
+.d-sis-lista li { padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.25); }
+.d-sis-lista strong { display: block; font-size: 24px; color: #fff; }
+.d-sis-lista span { display: block; margin-top: 4px; color: rgba(255, 255, 255, 0.8); }
+.d-sis-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.25); }
+.d-sis-cta p { margin: 0; font-size: 22px; font-weight: 600; }
+.d-sis .d-card { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.d-sis .d-card.in { opacity: 1; transform: none; }
+.d-sis-lista li:nth-child(2) { transition-delay: 0.07s; } .d-sis-lista li:nth-child(3) { transition-delay: 0.14s; } .d-sis-lista li:nth-child(4) { transition-delay: 0.21s; } .d-sis-lista li:nth-child(5) { transition-delay: 0.28s; }
+@media (max-width: 1023px) {
+  .d-sis-grade { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .d-sis-topo { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .d-sis-intro { font-size: 18px; margin: 20px 0 36px; }
+  .d-sis-lista strong { font-size: 21px; }
+  .d-sis-cta p { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .d-sis .d-card { opacity: 1 !important; transform: none !important; }
+}
+
 /* O que dá para criar: vitrine em blocos */
 .d-prod-sec { background: var(--tinta); color: #fff; }
 .d-prod-sec .d-h2 { color: #fff; }
@@ -209,6 +245,70 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .d-bento .d-card { opacity: 1 !important; transform: none !important; }
+}
+
+/* Demos fictícias nos blocos */
+.d-tem-demo > a::before { display: none; }
+.d-tem-demo .d-tile-txt { margin-top: 0; padding: 14px 20px 18px; }
+.d-tem-demo .d-tile-txt strong { font-size: 22px; }
+.d-tem-demo .d-tile-txt span { font-size: 14px; }
+.d-tile-demo { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-top: 14px; }
+
+/* Cardápio no celular */
+.dm-cel { width: 150px; height: 100%; min-height: 120px; background: #fff; color: var(--tinta); border: 5px solid var(--tinta); border-bottom: 0; border-radius: 22px 22px 0 0; align-self: flex-end; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px -20px rgba(17, 22, 51, 0.5); transform: translateY(8px); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.d-tile > a:hover .dm-cel { transform: translateY(0); }
+.dm-cel-topo { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 10px 4px; background: #B5361B; color: #fff; }
+.dm-cel-topo b { font-size: 12px; font-weight: 800; font-stretch: 115%; }
+.dm-cel-topo small { font-size: 8px; opacity: 0.8; }
+.dm-cel-abas { display: flex; gap: 4px; padding: 6px 8px; border-bottom: 1px solid var(--linha); }
+.dm-cel-abas i { font-style: normal; font-size: 8px; padding: 2px 6px; border-radius: 6px; background: var(--papel); }
+.dm-cel-abas i.on { background: var(--tinta); color: #fff; }
+.dm-cel-lista { flex: 1; overflow: hidden; position: relative; }
+.dm-cel-rola { display: block; animation: dm-rola 12s linear infinite; }
+.dm-item { display: flex; justify-content: space-between; gap: 6px; padding: 6px 10px; font-size: 9.5px; border-bottom: 1px solid var(--papel); }
+.dm-item b { white-space: nowrap; font-weight: 700; }
+@keyframes dm-rola { to { transform: translateY(-50%); } }
+
+/* Logo */
+.dm-logo { display: flex; align-items: center; gap: 12px; padding: 0 18px; color: #fff; }
+.dm-logo-marca { width: 74px; height: 74px; flex: none; background: #111633; border-radius: 18px; padding: 6px; }
+.dm-raios line { stroke-dasharray: 20; stroke-dashoffset: 20; }
+.d-card.in .dm-raios line { animation: dm-desenha 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.d-card.in .dm-raios line:nth-child(2) { animation-delay: 0.1s; } .d-card.in .dm-raios line:nth-child(3) { animation-delay: 0.2s; }
+.d-card.in .dm-raios line:nth-child(4) { animation-delay: 0.3s; } .d-card.in .dm-raios line:nth-child(5) { animation-delay: 0.4s; }
+.d-tile > a:hover .dm-raios line { animation: dm-desenha 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes dm-desenha { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
+.dm-logo-nome { display: flex; flex-direction: column; line-height: 1; }
+.dm-logo-nome b { font-size: 26px; font-weight: 900; font-stretch: 120%; letter-spacing: -0.02em; }
+.dm-logo-nome small { font-size: 11px; margin-top: 4px; opacity: 0.85; }
+.dm-logo-cores { position: absolute; right: 16px; top: 16px; display: flex; gap: 4px; }
+.dm-logo-cores i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.35); }
+
+/* Anúncio animado */
+.dm-ad { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; padding: 0 20px; align-items: center; }
+.dm-ad-card { position: relative; display: flex; flex-direction: column; gap: 3px; background: #fff; color: var(--tinta); border-radius: 12px; padding: 10px 12px; font-size: 11px; line-height: 1.35; animation: dm-ad-entra 7s ease infinite; }
+.dm-ad-card small { font-size: 9px; color: var(--cinza); font-weight: 700; }
+.dm-ad-card b { font-size: 14px; font-weight: 800; font-stretch: 112%; }
+.dm-ad-btn { margin-top: 4px; align-self: flex-start; background: var(--azul); color: #fff; font-weight: 700; font-size: 10px; padding: 5px 10px; border-radius: 999px; animation: dm-ad-toque 7s ease infinite; }
+.dm-ad-dedo { position: absolute; left: 62px; bottom: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(255, 210, 63, 0.85); box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.6); opacity: 0; animation: dm-ad-dedo 7s ease infinite; }
+.dm-ad-chat { display: flex; flex-direction: column; gap: 6px; }
+.dm-bolha { max-width: 100%; background: #fff; color: var(--tinta); font-size: 11px; line-height: 1.35; padding: 7px 10px; border-radius: 12px 12px 12px 3px; opacity: 0; transform: translateY(8px) scale(0.96); animation: dm-bolha 7s ease infinite; }
+.dm-bolha-resp { align-self: flex-end; background: var(--sol); border-radius: 12px 12px 3px 12px; animation-name: dm-bolha2; }
+@keyframes dm-ad-entra { 0% { opacity: 0; transform: translateY(14px); } 8%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes dm-ad-toque { 0%, 30% { transform: none; } 34% { transform: scale(0.9); } 38%, 100% { transform: none; } }
+@keyframes dm-ad-dedo { 0%, 24% { opacity: 0; } 28% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.6); } 38% { opacity: 0; box-shadow: 0 0 0 16px rgba(255, 210, 63, 0); } 100% { opacity: 0; } }
+@keyframes dm-bolha { 0%, 40% { opacity: 0; transform: translateY(8px) scale(0.96); } 46%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes dm-bolha2 { 0%, 60% { opacity: 0; transform: translateY(8px) scale(0.96); } 66%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+@media (max-width: 560px) {
+  .d-tem-demo > a { min-height: 0 !important; }
+  .d-tile-demo { min-height: 170px; }
+  .dm-cel { height: 170px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dm-cel-rola, .dm-ad-card, .dm-ad-btn, .dm-ad-dedo { animation: none !important; }
+  .dm-bolha { animation: none !important; opacity: 1; transform: none; }
+  .dm-raios line { stroke-dashoffset: 0 !important; animation: none !important; }
 }
 
 /* Serviços: linha se pinta de azul */
@@ -274,6 +374,7 @@
 
 @media (max-width: 1023px) {
   .d-nav-links { display: none; }
+  .d-nav > .d-lang { display: none; }
 
   /* Trabalhos empilhados, com entrada animada de cada card */
   .d-scrolly { grid-template-columns: 1fr; }
@@ -313,3 +414,8 @@
 @media (max-width: 560px) {
   .d-tile-g .d-tile-txt strong, .d-tom-sol .d-tile-txt strong, .d-tom-azul .d-tile-txt strong, .d-tom-tinta .d-tile-txt strong { font-size: 24px; }
 }
+
+/* Troca de idioma */
+.d-lang { margin-left: 22px; font-weight: 700; font-size: 14px; letter-spacing: 0.04em; padding: 6px 10px; border-radius: 8px; border: 1.5px solid currentColor; opacity: 0.9; transition: opacity 0.2s, background 0.2s; }
+.d-lang:hover { opacity: 1; background: rgba(255, 255, 255, 0.12); }
+.d-header.solid .d-lang:hover { background: var(--papel); }

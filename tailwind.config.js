@@ -3,6 +3,7 @@ export default {
   content: [
     './index.html',
     './politica-de-privacidade/index.html',
+    './en/index.html',
     './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {

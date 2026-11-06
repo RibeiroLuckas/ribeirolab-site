@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { Menu, X, Mail, Linkedin, Github } from 'lucide-react'
 import CookieBanner, { CookiePreferencesLink } from '@/components/CookieBanner'
 import { trackConversion } from '@/lib/analytics'
+import { content, type Content, type Lang } from '@/content'
 
 // ---------------------------------------------------------------------------
-// Dados — edite aqui.
+// Contatos — edite aqui. Os textos ficam em src/content.ts
 // ---------------------------------------------------------------------------
 const WHATSAPP_NUMBER = '5511965019133'
-const WHATSAPP_DISPLAY = '(11) 96501-9133'
 const EMAIL = 'lucas.ribeiro.araujo000@gmail.com'
 const LINKEDIN = 'https://www.linkedin.com/in/lucasribeirodesenvolvedor/'
 const GITHUB = 'https://github.com/RibeiroLuckas/'
@@ -17,51 +17,8 @@ const whatsappUrl = (text?: string) =>
 
 const vitrine = ['nativas-mel', 'nina-store', 'lumina-odonto', 'marcenaria-arte', 'automotion', 'silva-associados', 'salao-beleza', 'barbearia-modelo']
 
-type Work = { title: string; kind: string; status: string; text: string; image: string; url?: string; video?: string }
-
-const works: Work[] = [
-  { title: "Nativa's Mel", kind: 'Loja virtual', status: 'Cliente', text: 'Catálogo por florada e carrinho que envia o pedido pronto para o WhatsApp da empresa.', image: '/projetos/nativas-mel.webp', url: 'https://nativasmel.netlify.app/' },
-  { title: 'Nina Store', kind: 'Catálogo de moda', status: 'Cliente', text: 'Vitrine das lojas físicas, Instagram integrado e compra pelo WhatsApp.', image: '/projetos/nina-store.webp', url: 'https://nsninastore.netlify.app/' },
-  { title: 'MeuPDV', kind: 'Sistema sob medida', status: 'Cliente, em uso em 3 lojas', text: 'Frente de caixa com estoque entre lojas, etiquetas com código de barras e pagamento combinado.', image: '/videos/meupdv-capa.jpg', video: '/videos/meupdv-apresentacao.mp4' },
-  { title: 'Lumina Odonto', kind: 'Clínica odontológica', status: 'Modelo para adaptar', text: 'Identidade elegante, especialidades e agendamento de consulta.', image: '/projetos/lumina-odonto.webp', url: 'https://model-dentista.netlify.app/' },
-  { title: 'Marcenaria Arte', kind: 'Marcenaria', status: 'Modelo para adaptar', text: 'Portfólio de móveis planejados com pedido de orçamento.', image: '/projetos/marcenaria-arte.webp', url: 'https://model-marcenaria.netlify.app/' },
-  { title: 'AutoMotion', kind: 'Loja de veículos', status: 'Modelo para adaptar', text: 'Estoque de carros e motos com busca e simulação de financiamento.', image: '/projetos/automotion.webp', url: 'https://model-motor.netlify.app/' },
-]
-
-type Produto = { title: string; text: string; image?: string; tom?: 'sol' | 'azul' | 'tinta'; size: 'g' | 'l' | 'p' }
-
-const produtos: Produto[] = [
-  { title: 'Site institucional', text: 'A cara do seu negócio na internet, com serviços, fotos, mapa e WhatsApp.', image: '/projetos/lumina-odonto.webp', size: 'g' },
-  { title: 'Loja virtual', text: 'Catálogo com carrinho que fecha o pedido no WhatsApp.', image: '/projetos/nativas-mel.webp', size: 'l' },
-  { title: 'Cardápio digital', text: 'Abre pelo QR Code da mesa e sempre com preço atualizado.', tom: 'sol', size: 'p' },
-  { title: 'Agendamento online', text: 'Horários marcados sem telefone, com Trinks, Booksy ou WhatsApp.', image: '/projetos/barbearia-modelo.webp', size: 'p' },
-  { title: 'Catálogo de produtos', text: 'Vitrine das lojas físicas com compra pelo WhatsApp.', image: '/projetos/nina-store.webp', size: 'l' },
-  { title: 'Sistema sob medida', text: 'Frente de caixa, estoque e etiquetas, como o MeuPDV.', image: '/videos/meupdv-capa.jpg', size: 'l' },
-  { title: 'Landing page', text: 'Uma página focada em uma oferta, ideal para anúncios.', image: '/projetos/silva-associados.webp', size: 'p' },
-  { title: 'Logo e identidade visual', text: 'Cores, tipografia e logo para a marca ter cara própria.', tom: 'azul', size: 'p' },
-  { title: 'Anúncios no Google e Instagram', text: 'Campanhas com medição de quantas pessoas chamam no WhatsApp.', tom: 'tinta', size: 'l' },
-]
-
-const offers = [
-  { title: 'Ser encontrado', text: 'Site institucional, landing page, cardápio digital e botão de WhatsApp.', message: 'Olá! Quero um site para o meu negócio ser encontrado.' },
-  { title: 'Vender pela internet', text: 'Loja virtual, catálogo com pedido no WhatsApp e agendamento online.', message: 'Olá! Quero vender ou receber agendamentos pela internet.' },
-  { title: 'Organizar a operação', text: 'Sistemas sob medida como o MeuPDV, em uso em 3 lojas.', message: 'Olá! Quero conversar sobre um sistema sob medida.' },
-]
-
-const steps = [
-  { title: 'Conversa', text: 'Você me conta pelo WhatsApp o que o seu negócio precisa.' },
-  { title: 'Proposta', text: 'Escopo, prazo e valor por escrito, antes de qualquer pagamento.' },
-  { title: 'Criação', text: 'Você acompanha o site sendo feito e pede ajustes.' },
-  { title: 'No ar', text: 'Publico, conecto o WhatsApp e mostro como atualizar.' },
-]
-
-const navLinks = [
-  { label: 'Trabalhos', href: '#trabalhos' },
-  { label: 'O que criamos', href: '#produzir' },
-  { label: 'Serviços', href: '#servicos' },
-  { label: 'Como funciona', href: '#processo' },
-  { label: 'Sobre', href: '#sobre' },
-]
+const Txt = createContext<Content>(content.pt)
+const useT = () => useContext(Txt)
 
 // ---------------------------------------------------------------------------
 // Peças
@@ -108,6 +65,7 @@ function useReveal() {
 // Seções
 // ---------------------------------------------------------------------------
 function Header() {
+  const t = useT()
   const [solid, setSolid] = useState(false)
   const [open, setOpen] = useState(false)
   useEffect(() => {
@@ -120,23 +78,25 @@ function Header() {
   return (
     <header className={`d-header ${solid ? 'solid' : ''} ${open ? 'aberto' : ''}`}>
       <div className="d-wrap">
-        <a href="#inicio" className="d-logo" aria-label="RibeiroLab, início">RibeiroLab</a>
-        <nav aria-label="Navegação principal" className="d-nav flex items-center">
+        <a href="#inicio" className="d-logo" aria-label={t.logoAria}>RibeiroLab</a>
+        <nav aria-label={t.navAria} className="d-nav flex items-center">
           <span className="d-nav-links">
-            {navLinks.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+            {t.nav.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
           </span>
-          <a href="#contato" className="d-btn d-nav-cta ml-7">Pedir orçamento</a>
+          <a href={t.other.href} hrefLang={t.lang === 'pt' ? 'en' : 'pt-BR'} className="d-lang" aria-label={t.other.aria}>{t.other.label}</a>
+          <a href="#contato" className="d-btn d-nav-cta ml-5">{t.cta}</a>
           <button type="button" onClick={() => setOpen(!open)} className="-mr-2 ml-4 rounded-md p-2 lg:hidden"
-            aria-label={open ? 'Fechar menu' : 'Abrir menu'} aria-expanded={open} aria-controls="menu-celular">
+            aria-label={open ? t.menuClose : t.menuOpen} aria-expanded={open} aria-controls="menu-celular">
             {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
           </button>
         </nav>
       </div>
       {open && (
-        <nav id="menu-celular" aria-label="Navegação principal" className="border-t border-linha bg-white text-tinta lg:hidden">
+        <nav id="menu-celular" aria-label={t.navAria} className="border-t border-linha bg-white text-tinta lg:hidden">
           <div className="mx-auto flex max-w-[1240px] flex-col px-5 py-3 sm:px-8">
-            {navLinks.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="py-3 text-lg font-medium">{l.label}</a>)}
-            <a href="#contato" onClick={() => setOpen(false)} className="d-btn my-2">Pedir orçamento</a>
+            {t.nav.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="py-3 text-lg font-medium">{l.label}</a>)}
+            <a href={t.other.href} className="py-3 text-lg font-medium" aria-label={t.other.aria}>{t.other.aria}</a>
+            <a href="#contato" onClick={() => setOpen(false)} className="d-btn my-2">{t.cta}</a>
           </div>
         </nav>
       )}
@@ -145,11 +105,12 @@ function Header() {
 }
 
 function Hero() {
-  const words = 'Identidade que faz o cliente parar.'.split(' ')
+  const t = useT()
+  const words = t.hero.title.split(' ')
   return (
     <section id="inicio" className="d-hero">
       <div className="d-wrap">
-        <h1 className="d-h" aria-label="Identidade que faz o cliente parar.">
+        <h1 className="d-h" aria-label={t.hero.title}>
           {words.map((w, i) => (
             <span key={i} aria-hidden="true">
               <span className="d-palavra"><span style={{ animationDelay: `${i * 0.08}s` }}>{w}</span></span>{i < words.length - 1 ? ' ' : ''}
@@ -157,11 +118,11 @@ function Hero() {
           ))}
         </h1>
         <div className="d-hero-linha">
-          <p>Sites, lojas virtuais e sistemas para pequenos negócios, com visual próprio e pedidos chegando no WhatsApp. Você fala direto com quem cria.</p>
-          <WhatsAppLink className="d-btn" message="Olá! Vi o site da RibeiroLab e quero um orçamento."><WhatsAppIcon /> Pedir orçamento</WhatsAppLink>
+          <p>{t.hero.text}</p>
+          <WhatsAppLink className="d-btn" message={t.hero.msg}><WhatsAppIcon /> {t.cta}</WhatsAppLink>
         </div>
       </div>
-      <div className="d-faixa" aria-label="Sites feitos pela RibeiroLab">
+      <div className="d-faixa" aria-label={t.hero.stripAria}>
         <div className="d-trilho">
           {[...vitrine, ...vitrine].map((v, i) => (
             <div key={i} aria-hidden={i >= vitrine.length ? true : undefined}>
@@ -175,9 +136,10 @@ function Hero() {
 }
 
 function Trabalhos() {
+  const t = useT()
+  const works = t.sites.items
   const [active, setActive] = useState(0)
   const stepRefs = useRef<(HTMLLIElement | null)[]>([])
-  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (!('IntersectionObserver' in window)) return
@@ -188,16 +150,13 @@ function Trabalhos() {
     return () => io.disconnect()
   }, [])
 
-  useEffect(() => {
-    if (!works[active].video) videoRef.current?.pause()
-  }, [active])
 
   return (
     <section id="trabalhos" className="d-sec scroll-mt-16">
       <div className="d-wrap">
         <div className="d-intro d-rev">
-          <h2 className="d-h d-h2">Trabalhos</h2>
-          <p>Clientes reais e modelos prontos para receber a sua marca. Toque em cada um para ver o site funcionando.</p>
+          <h2 className="d-h d-h2">{t.sites.title}</h2>
+          <p>{t.sites.intro}</p>
         </div>
         <div className="d-scrolly">
           <ol className="d-steps">
@@ -208,8 +167,7 @@ function Trabalhos() {
                 <p>{w.text}</p>
                 <span className="d-step-status">{w.status}</span>
                 <img className="d-step-img" src={w.image} alt="" loading="lazy" decoding="async" width={800} height={450} />
-                {w.url && <><br /><a className="d-step-link" href={w.url} target="_blank" rel="noopener noreferrer">{w.status === 'Cliente' ? 'Visitar o site' : 'Ver o modelo'}<span className="sr-only"> {w.title} (abre em nova aba)</span></a></>}
-                {w.video && <><br /><a className="d-step-link" href={w.video} target="_blank" rel="noopener noreferrer">Assistir ao vídeo do sistema</a></>}
+                {w.url && <><br /><a className="d-step-link" href={w.url} target="_blank" rel="noopener noreferrer">{w.client ? t.sites.visit : t.sites.model}<span className="sr-only"> {w.title} {t.sites.newTab}</span></a></>}
               </li>
             ))}
           </ol>
@@ -217,9 +175,7 @@ function Trabalhos() {
             <div className="d-win">
               <div className="d-win-barra"><i /><i /><i /></div>
               <div className="d-tela">
-                {works.map((w, i) => w.video
-                  ? <video key={w.title} ref={videoRef} className={active === i ? 'on' : ''} src={w.video} poster={w.image} controls muted playsInline preload="none" tabIndex={-1} />
-                  : <img key={w.title} className={active === i ? 'on' : ''} src={w.image} alt="" decoding="async" />)}
+                {works.map((w, i) => <img key={w.title} className={active === i ? 'on' : ''} src={w.image} alt="" decoding="async" />)}
               </div>
             </div>
             <div className="d-contador"><b>{String(active + 1).padStart(2, '0')}</b> / {String(works.length).padStart(2, '0')}</div>
@@ -230,19 +186,129 @@ function Trabalhos() {
   )
 }
 
+function Sistemas() {
+  const t = useT()
+  const s = t.sistemas
+  const videoRef = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v || !('IntersectionObserver' in window)) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play().catch(() => {})
+      else v.pause()
+    }, { threshold: 0.5 })
+    io.observe(v)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <section id="sistemas" className="d-sec d-sis scroll-mt-16">
+      <div className="d-wrap">
+        <div className="d-sis-topo d-rev">
+          <div>
+            <p className="d-sis-rotulo">{s.label}</p>
+            <h2 className="d-h d-h2">MeuPDV</h2>
+          </div>
+          <div className="d-sis-num" aria-label={s.numAria}><b className="d-h">3</b><span>{s.numText[0]}<br />{s.numText[1]}</span></div>
+        </div>
+        <p className="d-sis-intro d-rev">{s.intro}</p>
+        <div className="d-sis-grade">
+          <figure className="d-sis-video d-card">
+            <div className="d-win">
+              <div className="d-win-barra" aria-hidden="true"><i /><i /><i /></div>
+              <video ref={videoRef} src="/videos/meupdv-apresentacao.mp4" poster="/videos/meupdv-capa.jpg" muted loop playsInline controls preload="metadata"
+                width={1280} height={720} aria-label={s.videoAria} />
+            </div>
+            <figcaption>{s.caption}</figcaption>
+          </figure>
+          <ul className="d-sis-lista">
+            {s.features.map(r => (
+              <li key={r.title} className="d-card"><strong className="d-h">{r.title}</strong><span>{r.text}</span></li>
+            ))}
+          </ul>
+        </div>
+        <div className="d-sis-cta">
+          <p>{s.ctaText}</p>
+          <WhatsAppLink className="d-btn" message={s.ctaMsg}><WhatsAppIcon /> {s.ctaButton}</WhatsAppLink>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Exemplos fictícios usados na vitrine "O que dá para criar"
+function DemoCardapio() {
+  const d = useT().produzir.demo
+  return (
+    <span className="dm-cel">
+      <span className="dm-cel-topo"><b>{d.menuName}</b><small>{d.example}</small></span>
+      <span className="dm-cel-abas">{d.tabs.map((tab, i) => <i key={tab} className={i === 0 ? 'on' : ''}>{tab}</i>)}</span>
+      <span className="dm-cel-lista">
+        <span className="dm-cel-rola">
+          {[...d.menu, ...d.menu].map(([n, v], i) => (
+            <span key={i} className="dm-item"><span>{n}</span><b>{d.currency} {v}</b></span>
+          ))}
+        </span>
+      </span>
+    </span>
+  )
+}
+
+function DemoLogo() {
+  const d = useT().produzir.demo
+  return (
+    <span className="dm-logo">
+      <svg viewBox="0 0 120 120" className="dm-logo-marca">
+        <circle cx="60" cy="72" r="26" fill="#FFD23F" />
+        <rect x="18" y="72" width="84" height="40" fill="#1840C8" />
+        <g stroke="#FFD23F" strokeWidth="6" strokeLinecap="round" className="dm-raios">
+          <line x1="60" y1="36" x2="60" y2="22" /><line x1="34" y1="46" x2="25" y2="36" /><line x1="86" y1="46" x2="95" y2="36" />
+          <line x1="24" y1="66" x2="11" y2="62" /><line x1="96" y1="66" x2="109" y2="62" />
+        </g>
+        <rect x="18" y="72" width="84" height="5" fill="#fff" />
+      </svg>
+      <span className="dm-logo-nome"><b>{d.logoName}</b><small>{d.logoTag}</small></span>
+      <span className="dm-logo-cores"><i style={{ background: '#FFD23F' }} /><i style={{ background: '#fff' }} /><i style={{ background: '#111633' }} /></span>
+    </span>
+  )
+}
+
+function DemoAnuncio() {
+  const d = useT().produzir.demo
+  return (
+    <span className="dm-ad">
+      <span className="dm-ad-card">
+        <small>{d.adLabel}</small>
+        <b>{d.adName}</b>
+        <span>{d.adText}</span>
+        <span className="dm-ad-btn">{d.adButton}</span>
+        <span className="dm-ad-dedo" />
+      </span>
+      <span className="dm-ad-chat">
+        <span className="dm-bolha">{d.chat[0]}</span>
+        <span className="dm-bolha dm-bolha-resp">{d.chat[1]}</span>
+      </span>
+    </span>
+  )
+}
+
 function Produzir() {
+  const t = useT()
+  const pz = t.produzir
   return (
     <section id="produzir" className="d-sec d-prod-sec scroll-mt-16">
       <div className="d-wrap">
         <div className="d-intro d-rev">
-          <h2 className="d-h d-h2">O que dá para criar</h2>
-          <p>Do cardápio da lanchonete ao sistema da rede de lojas. Toque em um item para conversar sobre ele.</p>
+          <h2 className="d-h d-h2">{pz.title}</h2>
+          <p>{pz.intro}</p>
         </div>
         <ul className="d-bento">
-          {produtos.map(p => (
-            <li key={p.title} className={`d-tile d-card d-tile-${p.size} ${p.tom ? `d-tom-${p.tom}` : ''}`}>
-              <WhatsAppLink message={`Olá! Quero saber mais sobre: ${p.title}.`} label={`Conversar sobre ${p.title} no WhatsApp`}>
-                {p.image && <span className="d-tile-img"><img src={p.image} alt="" loading="lazy" decoding="async" /></span>}
+          {pz.items.map(p => (
+            <li key={p.title} className={`d-tile d-card d-tile-${p.size} ${'tom' in p && p.tom ? `d-tom-${p.tom}` : ''} ${'demo' in p && p.demo ? 'd-tem-demo' : ''}`}>
+              <WhatsAppLink message={pz.msg(p.title)} label={pz.aria(p.title)}>
+                {'image' in p && p.image && <span className="d-tile-img"><img src={p.image} alt="" loading="lazy" decoding="async" /></span>}
+                {'demo' in p && p.demo && <span className="d-tile-demo" aria-hidden="true">{p.demo === 'cardapio' ? <DemoCardapio /> : p.demo === 'logo' ? <DemoLogo /> : <DemoAnuncio />}</span>}
                 <span className="d-tile-txt">
                   <strong className="d-h">{p.title}</strong>
                   <span>{p.text}</span>
@@ -252,7 +318,7 @@ function Produzir() {
           ))}
         </ul>
         <p className="d-prod-fim">
-          Não achou o que precisa? <WhatsAppLink message="Olá! Tenho uma ideia de projeto e quero conversar.">Me conte a sua ideia no WhatsApp</WhatsAppLink>.
+          {pz.endText} <WhatsAppLink message={pz.endMsg}>{pz.endLink}</WhatsAppLink>.
         </p>
       </div>
     </section>
@@ -260,29 +326,29 @@ function Produzir() {
 }
 
 function Servicos() {
+  const t = useT()
   return (
     <section id="servicos" className="d-sec d-serv scroll-mt-16">
       <div className="d-wrap">
-        <h2 className="d-h d-h2 d-rev">O que eu faço</h2>
+        <h2 className="d-h d-h2 d-rev">{t.servicos.title}</h2>
         <div className="d-lista">
-          {offers.map((o, i) => (
+          {t.servicos.items.map((o, i) => (
             <div key={o.title} className="d-item">
               <b aria-hidden="true">{i + 1}</b>
               <h3 className="d-h">{o.title}</h3>
               <p>{o.text}</p>
-              <WhatsAppLink message={o.message}>Conversar sobre isso</WhatsAppLink>
+              <WhatsAppLink message={o.msg}>{t.servicos.talk}</WhatsAppLink>
             </div>
           ))}
         </div>
-        <p className="mt-10 max-w-2xl text-grafite">
-          Também cuido de anúncios no Google e no Instagram, com medição de quantas pessoas chamam no WhatsApp.
-        </p>
+        <p className="mt-10 max-w-2xl text-grafite">{t.servicos.note}</p>
       </div>
     </section>
   )
 }
 
 function Processo() {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = ref.current
@@ -299,11 +365,11 @@ function Processo() {
   return (
     <section id="processo" className="d-sec scroll-mt-16">
       <div className="d-wrap">
-        <h2 className="d-h d-h2 d-rev">Como funciona</h2>
+        <h2 className="d-h d-h2 d-rev">{t.processo.title}</h2>
         <div className="d-proc-wrap" ref={ref}>
           <div className="d-proc-linha" aria-hidden="true"><i /></div>
           <ol className="d-proc">
-            {steps.map(s => (
+            {t.processo.steps.map(s => (
               <li key={s.title}><h3 className="d-h">{s.title}</h3><p>{s.text}</p></li>
             ))}
           </ol>
@@ -314,26 +380,20 @@ function Processo() {
 }
 
 function Sobre() {
+  const t = useT()
   return (
     <section id="sobre" className="d-sec d-sobre scroll-mt-16">
       <div className="d-wrap d-sobre-grade">
         <div>
-          <h2 className="d-h d-h2 d-rev">Quem faz</h2>
+          <h2 className="d-h d-h2 d-rev">{t.sobre.title}</h2>
           <div className="mt-8 max-w-[62ch] space-y-4 text-lg">
-            <p>
-              Sou o Lucas Ribeiro, desenvolvedor em São Paulo. Criei a RibeiroLab para dar a pequenos negócios um visual
-              próprio na internet e um caminho direto até o WhatsApp.
-            </p>
-            <p>Você fala comigo do primeiro contato à publicação. Sem intermediário e sem resposta automática.</p>
+            {t.sobre.paras.map(p => <p key={p}>{p}</p>)}
           </div>
         </div>
         <div>
-          <h3 className="d-h text-2xl">Formação</h3>
+          <h3 className="d-h text-2xl">{t.sobre.eduTitle}</h3>
           <ul className="mt-5">
-            <li>Análise e Desenvolvimento de Sistemas (em curso)</li>
-            <li>Certificações em Java e Spring Boot</li>
-            <li>Certificações Databricks em engenharia de dados e IA generativa</li>
-            <li>Bootcamps de back-end com Java e soluções com inteligência artificial</li>
+            {t.sobre.edu.map(e => <li key={e}>{e}</li>)}
           </ul>
         </div>
       </div>
@@ -344,17 +404,14 @@ function Sobre() {
 const fieldClass = 'w-full rounded-lg border border-linha bg-white px-4 py-3 text-tinta placeholder:text-grafite/70 focus:border-placa'
 
 function Contato() {
+  const t = useT()
+  const c = t.contato
   const [sent, setSent] = useState(false)
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const service = data.get('service')
-    const message = [
-      `Olá, RibeiroLab! Meu nome é ${data.get('name')}.`,
-      `Meu e-mail é ${data.get('email')}.`,
-      service ? `Tenho interesse em: ${service}.` : '',
-      String(data.get('message') || ''),
-    ].filter(Boolean).join(' ')
+    const message = c.compose(String(data.get('name') || ''), String(data.get('email') || ''), String(service || ''), String(data.get('message') || ''))
     trackConversion('form')
     window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer')
     setSent(true)
@@ -365,11 +422,11 @@ function Contato() {
       <div className="d-grande" aria-hidden="true">RibeiroLab</div>
       <div className="d-wrap d-cta-grade">
         <div>
-          <h2 className="d-h d-rev">Vamos dar uma cara nova para o seu negócio?</h2>
-          <p className="mt-6 max-w-lg text-lg text-white/80">Conte o que você precisa. Respondo pelo WhatsApp com as próximas etapas.</p>
-          <WhatsAppLink className="d-btn mt-8" message="Olá! Vi o site da RibeiroLab e quero um orçamento."><WhatsAppIcon /> Chamar no WhatsApp</WhatsAppLink>
+          <h2 className="d-h d-rev">{c.title}</h2>
+          <p className="mt-6 max-w-lg text-lg text-white/80">{c.text}</p>
+          <WhatsAppLink className="d-btn mt-8" message={t.hero.msg}><WhatsAppIcon /> {c.button}</WhatsAppLink>
           <ul className="mt-10 space-y-3 text-lg">
-            <li><WhatsAppLink className="underline decoration-white/30 underline-offset-4 hover:decoration-white">WhatsApp {WHATSAPP_DISPLAY}</WhatsAppLink></li>
+            <li><WhatsAppLink className="underline decoration-white/30 underline-offset-4 hover:decoration-white">WhatsApp {c.phone}</WhatsAppLink></li>
             <li><a href={`mailto:${EMAIL}`} className="break-all underline decoration-white/30 underline-offset-4 hover:decoration-white">{EMAIL}</a></li>
           </ul>
         </div>
@@ -377,34 +434,34 @@ function Contato() {
         <div className="rounded-2xl bg-white p-6 text-tinta md:p-8">
           {sent ? (
             <div className="py-8" role="status">
-              <p className="d-h text-2xl">Mensagem pronta no WhatsApp</p>
-              <p className="mt-3 text-grafite">Abri uma conversa com o seu texto. Toque em enviar por lá para eu receber.</p>
-              <button type="button" onClick={() => setSent(false)} className="link mt-6">Escrever outra mensagem</button>
+              <p className="d-h text-2xl">{c.sentTitle}</p>
+              <p className="mt-3 text-grafite">{c.sentText}</p>
+              <button type="button" onClick={() => setSent(false)} className="link mt-6">{c.again}</button>
             </div>
           ) : (
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="name" className="mb-1.5 block font-medium">Nome</label>
+                <label htmlFor="name" className="mb-1.5 block font-medium">{c.name}</label>
                 <input id="name" name="name" required type="text" autoComplete="name" className={fieldClass} />
               </div>
               <div>
-                <label htmlFor="email" className="mb-1.5 block font-medium">E-mail</label>
+                <label htmlFor="email" className="mb-1.5 block font-medium">{c.email}</label>
                 <input id="email" name="email" required type="email" autoComplete="email" className={fieldClass} />
               </div>
               <div>
-                <label htmlFor="service" className="mb-1.5 block font-medium">O que você precisa</label>
+                <label htmlFor="service" className="mb-1.5 block font-medium">{c.need}</label>
                 <select id="service" name="service" className={fieldClass} defaultValue="">
-                  <option value="">Ainda não sei</option>
-                  {offers.map(o => <option key={o.title} value={o.title}>{o.title}</option>)}
+                  <option value="">{c.unsure}</option>
+                  {t.servicos.items.map(o => <option key={o.title} value={o.title}>{o.title}</option>)}
                 </select>
               </div>
               <div>
-                <label htmlFor="message" className="mb-1.5 block font-medium">Mensagem</label>
-                <textarea id="message" name="message" required rows={4} className={`${fieldClass} resize-none`} placeholder="Ex.: tenho uma loja de roupas e quero vender pelo Instagram e WhatsApp" />
+                <label htmlFor="message" className="mb-1.5 block font-medium">{c.message}</label>
+                <textarea id="message" name="message" required rows={4} className={`${fieldClass} resize-none`} placeholder={c.placeholder} />
               </div>
-              <button type="submit" className="w-full rounded-full bg-placa px-6 py-4 font-bold text-white transition-colors hover:bg-placa-escura">Enviar pelo WhatsApp</button>
+              <button type="submit" className="w-full rounded-full bg-placa px-6 py-4 font-bold text-white transition-colors hover:bg-placa-escura">{c.submit}</button>
               <p className="text-sm text-grafite">
-                O formulário abre o WhatsApp com a sua mensagem. Veja a <a href="/politica-de-privacidade/" className="link font-medium">Política de Privacidade</a>.
+                {c.privacyPre} <a href="/politica-de-privacidade/" className="link font-medium">{c.privacy}</a>.
               </p>
             </form>
           )}
@@ -415,6 +472,8 @@ function Contato() {
 }
 
 function Rodape() {
+  const t = useT()
+  const r = t.rodape
   const icon = 'd-icone'
   return (
     <footer className="d-rodape">
@@ -422,47 +481,52 @@ function Rodape() {
         <div className="d-rodape-topo">
           <div>
             <a href="#inicio" className="d-logo text-white">RibeiroLab</a>
-            <p className="mt-2 max-w-sm">Sites, lojas virtuais e sistemas para pequenos negócios, em São Paulo.</p>
+            <p className="mt-2 max-w-sm">{r.tagline}</p>
             <div className="d-icones">
-              <WhatsAppLink className={icon} label="Conversar pelo WhatsApp"><WhatsAppIcon /></WhatsAppLink>
-              <a className={icon} href={`mailto:${EMAIL}`} aria-label="Enviar e-mail"><Mail aria-hidden="true" /></a>
-              <a className={icon} href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Lucas Ribeiro (abre em nova aba)"><Linkedin aria-hidden="true" /></a>
-              <a className={icon} href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lucas Ribeiro (abre em nova aba)"><Github aria-hidden="true" /></a>
+              <WhatsAppLink className={icon} label={r.wa}><WhatsAppIcon /></WhatsAppLink>
+              <a className={icon} href={`mailto:${EMAIL}`} aria-label={r.mail}><Mail aria-hidden="true" /></a>
+              <a className={icon} href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label={r.linkedin}><Linkedin aria-hidden="true" /></a>
+              <a className={icon} href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label={r.github}><Github aria-hidden="true" /></a>
             </div>
           </div>
-          <nav aria-label="Rodapé">
-            {navLinks.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
-            <a href="#contato">Contato</a>
-            <a href="/politica-de-privacidade/">Política de Privacidade</a>
-            <CookiePreferencesLink />
+          <nav aria-label={r.aria}>
+            {t.nav.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+            <a href="#contato">{r.contact}</a>
+            <a href={t.other.href} hrefLang={t.lang === 'pt' ? 'en' : 'pt-BR'}>{t.other.aria}</a>
+            <a href="/politica-de-privacidade/">{r.privacy}</a>
+            <CookiePreferencesLink lang={t.lang} />
           </nav>
         </div>
-        <div className="d-rodape-base">© {new Date().getFullYear()} RibeiroLab. Lucas Ribeiro, São Paulo.</div>
+        <div className="d-rodape-base">© {new Date().getFullYear()} {r.copy}</div>
       </div>
     </footer>
   )
 }
 
-export default function App() {
+export default function App({ lang = 'pt' }: { lang?: Lang }) {
   useReveal()
+  const t = content[lang]
   return (
-    <div className="d-body">
-      <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-tinta">
-        Pular para o conteúdo
-      </a>
-      <Header />
-      <main id="conteudo">
-        <Hero />
-        <Trabalhos />
-        <Produzir />
-        <Servicos />
-        <Processo />
-        <Sobre />
-        <Contato />
-      </main>
-      <Rodape />
-      <WhatsAppLink className="d-wa" label="Conversar pelo WhatsApp" message="Olá, RibeiroLab! Vim pelo site."><WhatsAppIcon /></WhatsAppLink>
-      <CookieBanner />
-    </div>
+    <Txt.Provider value={t}>
+      <div className="d-body">
+        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-tinta">
+          {t.skip}
+        </a>
+        <Header />
+        <main id="conteudo">
+          <Hero />
+          <Trabalhos />
+          <Sistemas />
+          <Produzir />
+          <Servicos />
+          <Processo />
+          <Sobre />
+          <Contato />
+        </main>
+        <Rodape />
+        <WhatsAppLink className="d-wa" label={t.rodape.wa} message={t.floatMsg}><WhatsAppIcon /></WhatsAppLink>
+        <CookieBanner lang={lang} />
+      </div>
+    </Txt.Provider>
   )
 }

@@ -82,7 +82,7 @@ export default function PrivacyPolicy() {
             <Section id="quem-somos" title={sections[0].title}>
               <p>
                 O controlador dos dados pessoais tratados por meio deste site é a <strong>RibeiroLab</strong>,
-                marca de desenvolvimento web de Lucas Ribeiro Araujo, com atuação em São Paulo/SP.
+                marca de desenvolvimento web de Lucas Ribeiro Araujo, sediada em São Paulo/SP, com atendimento on-line em todo o Brasil.
               </p>
               <p>
                 Para qualquer assunto relacionado a privacidade e proteção de dados, fale diretamente com o responsável
@@ -233,7 +233,7 @@ export default function PrivacyPolicy() {
 
       <footer className="bg-tinta py-10 text-white/75">
         <div className="pagina flex flex-col gap-4 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 RibeiroLab. Lucas Ribeiro, São Paulo.</p>
+          <p>© 2026 RibeiroLab. Lucas Ribeiro. Atendimento on-line para todo o Brasil.</p>
           <div className="flex gap-6">
             <CookiePreferencesLink className="hover:text-white" />
             <a href="/" className="hover:text-white">Voltar para a página inicial</a>
